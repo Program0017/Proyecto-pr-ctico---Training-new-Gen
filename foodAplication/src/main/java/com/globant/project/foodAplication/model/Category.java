@@ -8,6 +8,4 @@ public enum Category {
     DESSERTS,
     VEGAN_FOOD,
     KIDS_MEALS,
-
-
 }
