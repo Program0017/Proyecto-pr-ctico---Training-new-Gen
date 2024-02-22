@@ -1,4 +1,6 @@
 package com.globant.project.foodAplication.model;
+import java.util.UUID;
+
 
 import jakarta.persistence.*;
 
@@ -17,7 +19,13 @@ public class Client {
 
     private String deliveryAddress;
 
-    private String UUID;
+    @Column(unique = true,
+            columnDefinition = "BINARY(16)")
+    private UUID uuid;
+
+    public Client() {
+        this.uuid = UUID.randomUUID();
+    }
 
     public Long getId() {
         return id;
@@ -59,13 +67,10 @@ public class Client {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public String getUUID() {
-        return UUID;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
-    }
 
 
 }
