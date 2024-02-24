@@ -1,4 +1,4 @@
-package com.globant.project.foodAplication.model;
+package com.globant.project.foodAplication.model.category;
 
 public enum Category {
     HAMBURGERS_AND_HOTDOGS,

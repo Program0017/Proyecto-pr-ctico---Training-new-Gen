@@ -1,6 +1,6 @@
-package com.globant.project.foodAplication.repository;
+package com.globant.project.foodAplication.repository.client;
 
-import com.globant.project.foodAplication.model.Client;
+import com.globant.project.foodAplication.model.client.Client;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

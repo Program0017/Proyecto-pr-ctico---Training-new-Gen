@@ -1,5 +1,6 @@
-package com.globant.project.foodAplication.model;
+package com.globant.project.foodAplication.model.product;
 
+import com.globant.project.foodAplication.model.category.Category;
 import jakarta.persistence.*;
 
 import java.util.UUID;

@@ -1,10 +1,9 @@
-package com.globant.project.foodAplication.service;
+package com.globant.project.foodAplication.service.client;
 
-import com.globant.project.foodAplication.model.Client;
-import com.globant.project.foodAplication.repository.IClientRepository;
+import com.globant.project.foodAplication.model.client.Client;
+import com.globant.project.foodAplication.repository.client.IClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

@@ -1,4 +1,4 @@
-package com.globant.project.foodAplication.model;
+package com.globant.project.foodAplication.model.client;
 import java.util.UUID;
 
 
