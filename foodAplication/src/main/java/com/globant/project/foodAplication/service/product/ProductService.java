@@ -1,7 +1,7 @@
-package com.globant.project.foodAplication.service;
+package com.globant.project.foodAplication.service.product;
 
-import com.globant.project.foodAplication.model.Product;
-import com.globant.project.foodAplication.repository.IProductRepository;
+import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.repository.product.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

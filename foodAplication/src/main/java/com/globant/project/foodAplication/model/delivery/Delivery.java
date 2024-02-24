@@ -1,5 +1,7 @@
-package com.globant.project.foodAplication.model;
+package com.globant.project.foodAplication.model.delivery;
 
+import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.model.client.Client;
 import jakarta.persistence.*;
 
 @Entity

@@ -1,6 +1,6 @@
-package com.globant.project.foodAplication.dto;
+package com.globant.project.foodAplication.commons.dto;
 
-import com.globant.project.foodAplication.model.Client;
+import com.globant.project.foodAplication.model.client.Client;
 
 public class DeliveryDto {
 
