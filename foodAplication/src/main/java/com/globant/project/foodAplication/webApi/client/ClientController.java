@@ -16,9 +16,8 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping(IClientEndPoints.CLIENT_CREATE_URL)
-    public ResponseEntity<Client> create (@RequestBody Client client){
-        Client createClient = clientService.create(client);
-        return new ResponseEntity<>(createClient, HttpStatus.CREATED);
+    public String createClient(@RequestBody Client client){
+        return this.clientService.createClient(client);
     }
 
     @GetMapping(IClientEndPoints.CLIENT_GET_URL)

@@ -3,8 +3,14 @@ package com.globant.project.foodAplication.model.delivery;
 import com.globant.project.foodAplication.model.product.Product;
 import com.globant.project.foodAplication.model.client.Client;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Data
+@Getter
+@Setter
 @Table(name = "deliveries")
 public class Delivery {
 
