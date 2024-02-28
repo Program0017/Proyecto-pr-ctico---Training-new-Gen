@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -15,4 +17,9 @@ public class DeliveryDto {
     private Client client_id;
     private Integer quantity;
     private String extraInformation;
+    private Date creationDateTime;
+    private Date deleveryDate;
+    private double tax;
+    private double grandTotal;
+    private double subTotal;
 }

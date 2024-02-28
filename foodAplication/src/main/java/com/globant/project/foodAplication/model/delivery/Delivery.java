@@ -5,6 +5,9 @@ import com.globant.project.foodAplication.model.client.Client;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Entity
 @Data
 @Getter
@@ -17,6 +20,9 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private  UUID UUID;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -30,4 +36,15 @@ public class Delivery {
 
     @Column(name = "extra_information")
     private String extraInformation;
+    @Column(name = "creation_datetime")
+    private Date creationDateTime;
+    @Column(name = "delivery_date")
+    private Date deleveryDate;
+    @Column(name = "tax")
+    private double tax;
+    @Column(name = "grand_total")
+    private double grandTotal;
+    @Column(name = "sub_total")
+    private double subTotal;
+
 }
