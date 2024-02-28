@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 public class OrderDto {
 
+    private Long id;
     private Product product_id;
     private Client client_id;
     private Integer quantity;

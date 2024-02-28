@@ -29,6 +29,7 @@ public class OrderService {
 
     public Order createOrder(OrderDto orderDto) {
         Product product = productRepository.findById(orderDto.getProduct_id().getUuid()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        LocalDateTime fechaYA = LocalDateTime.now();
 
         Double price = product.getPrice();
         Integer quantity = orderDto.getQuantity();
@@ -47,8 +48,6 @@ public class OrderService {
 
         Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
         order.setGrandTotal(grandTotal);
-
-;
 
         iOrderRepository.save(order);
         return order;
