@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Getter
 @Setter
-public class DeliveryDto {
+public class OrderDto {
 
     private Product product_id;
     private Client client_id;
@@ -19,7 +19,8 @@ public class DeliveryDto {
     private String extraInformation;
     private Date creationDateTime;
     private Date deleveryDate;
-    private double tax;
-    private double grandTotal;
-    private double subTotal;
+    private Double tax;
+    private Double grandTotal;
+    private Double subTotal;
+    private Boolean isDelivered;
 }

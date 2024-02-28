@@ -9,30 +9,26 @@ import java.util.UUID;
 @Table(name = "products")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "fantasy_name")
     private String fantasyName;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     private String description;
 
-    private String price;
+    private Double price;
 
     private Boolean available;
-
-    @Column(unique = true,
-            columnDefinition = "BINARY(16)")
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, columnDefinition = "BINARY(16)")
     private UUID uuid;
 
     public Product() { this.uuid = UUID.randomUUID(); }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getFantasyName() {
         return fantasyName;
@@ -46,7 +42,7 @@ public class Product {
         return description;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -57,11 +53,6 @@ public class Product {
     public UUID getUuid() {
         return uuid;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setFantasyName(String fantasyName) {
         this.fantasyName = fantasyName;
     }
@@ -74,7 +65,7 @@ public class Product {
         this.description = description;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -85,4 +76,6 @@ public class Product {
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
+
+
 }

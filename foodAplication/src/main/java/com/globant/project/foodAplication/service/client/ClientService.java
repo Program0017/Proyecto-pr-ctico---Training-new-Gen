@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
-public class    ClientService {
+public class ClientService {
 
     @Autowired
     private IClientRepository clientRepository;

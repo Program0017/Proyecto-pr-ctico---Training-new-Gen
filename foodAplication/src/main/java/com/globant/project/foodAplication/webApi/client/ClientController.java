@@ -3,6 +3,7 @@ package com.globant.project.foodAplication.webApi.client;
 import com.globant.project.foodAplication.commons.constants.endPoints.client.IClientEndPoints;
 import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.service.client.ClientService;
+import com.globant.project.foodAplication.utils.SubTotalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+
 
     @PostMapping(IClientEndPoints.CLIENT_CREATE_URL)
     public String createClient(@RequestBody Client client){
@@ -30,5 +33,4 @@ public class ClientController {
         Client updatedClient = clientService.updateClient(userId, client);
         return new ResponseEntity<>(updatedClient, HttpStatus.OK);
     }
-
 }
