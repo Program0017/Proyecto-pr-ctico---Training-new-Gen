@@ -1,5 +1,6 @@
 package com.globant.project.foodAplication.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.globant.project.foodAplication.model.category.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,8 +17,10 @@ import java.util.UUID;
 public class Product {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @Column(unique = true, length = 36, columnDefinition = "BINARY(16)")
     private UUID uuid;
@@ -25,15 +28,12 @@ public class Product {
     @Column(name = "fantasy_name")
     private String fantasyName;
 
-    @OneToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     private String description;
 
     private Double price;
 
-    private Boolean available;
-
+    private Boolean isAvailable;
 
 }

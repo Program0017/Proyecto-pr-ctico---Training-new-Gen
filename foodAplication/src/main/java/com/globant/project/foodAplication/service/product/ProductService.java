@@ -1,5 +1,6 @@
 package com.globant.project.foodAplication.service.product;
 
+import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.model.product.Product;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ public class ProductService {
     @Autowired
     private IProductRepository productRepository;
 
-    public Product createProduct(Product product){ return this.productRepository.save(product); }
+    public Product createProduct(Product product){
+        product.setUuid(UUID.randomUUID());
+        return this.productRepository.save(product); }
 
     public Product findByUUID(UUID uuid){
         return this.productRepository.findByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product %d does not exist", uuid)));
@@ -47,5 +50,4 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
         }
     }
-
 }

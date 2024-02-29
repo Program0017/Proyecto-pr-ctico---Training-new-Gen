@@ -11,4 +11,7 @@ import java.util.UUID;
 public interface IProductRepository extends CrudRepository<Product, Long> {
 
     Optional<Product> findByUuid(UUID uuid);
+
+
+
 }
