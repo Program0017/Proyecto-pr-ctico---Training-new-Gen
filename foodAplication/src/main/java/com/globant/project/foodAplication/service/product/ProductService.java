@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -15,14 +16,14 @@ public class ProductService {
     @Autowired
     private IProductRepository productRepository;
 
-    public Product findById(Long productId){
-        return this.productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product %d does not exist", productId)));
-    }
-
     public Product createProduct(Product product){ return this.productRepository.save(product); }
 
-    public Product updateProduct(Long productId, Product product){
-        Optional<Product> result = this.productRepository.findById(productId);
+    public Product findByUUID(UUID uuid){
+        return this.productRepository.findByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product %d does not exist", uuid)));
+    }
+
+    public Product updateProduct(UUID uuid, Product product){
+        Optional<Product> result = this.productRepository.findByUuid(uuid);
         if (result.isPresent()){
             Product existingProduct = result.get();
 
@@ -32,18 +33,18 @@ public class ProductService {
             return this.productRepository.save(existingProduct);
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Producto with id %d does not exist", productId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Producto with id %d does not exist", uuid));
         }
     }
-
-    public Product deleteProduct(Long productId){
-        Optional<Product> result = this.productRepository.findById(productId);
+    //pensar en metodo de resta de stock
+    public Product deleteProduct(UUID uuid){
+        Optional<Product> result = this.productRepository.findByUuid(uuid);
         if(result.isPresent()){
             this.productRepository.delete(result.get());
             return result.get();
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", productId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
         }
     }
 

@@ -16,33 +16,37 @@ public class ClientService {
     @Autowired
     private IClientRepository clientRepository;
 
-    public Client findById(Long userId){
-        return clientRepository.findById(userId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User %d does not exist", userId)));
+    public Client findByDocument(String document){
+        return clientRepository.findByDocument(document).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User %d with this document does not exist", document)));
     }
 
-    public String createClient(Client client){
+    public String createClient(Client client) {
         try {
-            Optional<Client> find = this.clientRepository.findById(client.getId());
-            if (!find.isPresent()){
-                this.clientRepository.save(client);
-                return IResponse.CREATE_SUCCESS;
-            }else {
-                return IResponse.CREATE_FAIL;
-            }
-        }catch (Exception e){
+            this.clientRepository.save(client);
+            return IResponse.CREATE_SUCCESS;
+        } catch (Exception e) {
             return IResponse.INTERNAL_SERVER_ERROR + e;
         }
     }
 
 
 
-    public Client updateClient(Long userId, Client client) {
-        Optional<Client> result = this.clientRepository.findById(userId);
+    public Client updateClient(String document, Client client) {
+        Optional<Client> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
             return this.clientRepository.save(client);
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("Client %s not found", userId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
         }
 
     }
+
+    public Client desactivateClient(String document) {
+        Optional<Client> result = this.clientRepository.findByDocument(document);
+        if (result.isPresent()){
+        result.get().setIsActive(!result.get().getIsActive());
+        return this.clientRepository.save(result.get());
+    }else{
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
+    }}
 }

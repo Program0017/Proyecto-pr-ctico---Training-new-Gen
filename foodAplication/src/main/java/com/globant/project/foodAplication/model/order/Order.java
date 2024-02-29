@@ -21,12 +21,12 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "uuid")
-    @GeneratedValue(strategy = GenerationType.UUID)
+
+    @Column(unique = true)
     private  UUID UUID;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "uuid")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -55,8 +55,9 @@ public class Order {
     private Double subTotal;
 
     @Column(name = "delivered")
-    private Boolean isDelivered;
-    public Order(Date creationDateTime, Boolean isDelivered) {
+    private Boolean isDelivered = false;
+
+    public Order(LocalDateTime creationDateTime, Boolean isDelivered) {
         this.creationDateTime = LocalDateTime.now();
         this.isDelivered = false;
     }

@@ -15,21 +15,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 
 public class OrderService {
     @Autowired
     private IOrderRepository iOrderRepository;
-
     @Autowired
     private IProductRepository productRepository;
     @Autowired
     private IClientRepository clientRepository;
 
+
     public Order createOrder(OrderDto orderDto) {
-        Product product = productRepository.findById(orderDto.getProduct_id().getUuid()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        LocalDateTime fechaYA = LocalDateTime.now();
+        Product product = productRepository.findById(orderDto.getProduct_id().getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         Double price = product.getPrice();
         Integer quantity = orderDto.getQuantity();
@@ -39,6 +39,8 @@ public class OrderService {
         order.setProduct(orderDto.getProduct_id());
         order.setQuantity(orderDto.getQuantity());
         order.setExtraInformation(orderDto.getExtraInformation());
+
+        order.setUUID(UUID.fromString(UUID.randomUUID().toString()));
 
         Double subTotal = SubTotalUtils.makeSubTotal(price , quantity);
         order.setSubTotal(subTotal);

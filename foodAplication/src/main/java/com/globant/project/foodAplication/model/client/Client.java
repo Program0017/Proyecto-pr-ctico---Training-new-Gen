@@ -3,22 +3,25 @@ import java.util.UUID;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "clients")
+@Table(name = "clients", indexes = {
+        @Index(columnList = "document", unique = true),
+        @Index(columnList = "email", unique = true),
+        @Index(columnList = "phone", unique = true)
+})
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     private String document;
@@ -29,12 +32,6 @@ public class Client {
 
     private String deliveryAddress;
 
-    @Column(unique = true,
-            columnDefinition = "BINARY(16)")
-    private UUID uuid;
-
-    public Client() {
-        this.uuid = UUID.randomUUID();
-    }
+    private Boolean isActive = true;
 
 }
