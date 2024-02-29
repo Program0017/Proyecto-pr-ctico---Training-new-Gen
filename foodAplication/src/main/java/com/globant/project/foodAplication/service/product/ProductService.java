@@ -1,6 +1,5 @@
 package com.globant.project.foodAplication.service.product;
 
-import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.model.product.Product;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
