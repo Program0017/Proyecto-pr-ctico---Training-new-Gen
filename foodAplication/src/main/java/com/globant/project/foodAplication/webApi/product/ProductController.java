@@ -34,9 +34,9 @@ public class ProductController {
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
-    @DeleteMapping(IProductEndPoints.PRODUCT_DELETE_URL)
+    @PatchMapping(IProductEndPoints.PRODUCT_DESACTIVATE_URL)
     public ResponseEntity<Product> deleteProduct(@PathVariable("uuid") UUID uuid ){
-        return new ResponseEntity<Product>(productService.deleteProduct(uuid), HttpStatus.OK);
+        return new ResponseEntity<Product>(productService.desactivateProduct(uuid), HttpStatus.OK);
     }
 
 

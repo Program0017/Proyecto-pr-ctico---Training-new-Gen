@@ -39,11 +39,11 @@ public class ProductService {
         }
     }
     //pensar en metodo de resta de stock
-    public Product deleteProduct(UUID uuid){
+    public Product desactivateProduct(UUID uuid){
         Optional<Product> result = this.productRepository.findByUuid(uuid);
         if(result.isPresent()){
-            this.productRepository.delete(result.get());
-            return result.get();
+            result.get().setAvailable((!result.get().getAvailable()));
+            return this.productRepository.save(result.get());
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
