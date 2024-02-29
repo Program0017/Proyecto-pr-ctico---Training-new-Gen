@@ -1,5 +1,4 @@
 package com.globant.project.foodAplication.model.client;
-import java.util.UUID;
 
 
 import jakarta.persistence.*;

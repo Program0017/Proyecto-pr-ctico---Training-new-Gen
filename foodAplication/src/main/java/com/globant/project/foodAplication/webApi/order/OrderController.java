@@ -13,14 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(name = IOrderEndPoints.ORDER_BASE_URL)
+@RequestMapping(IOrderEndPoints.ORDER_BASE_URL)
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
     @PostMapping(IOrderEndPoints.ORDER_CREATE_URL)
-    public ResponseEntity<Order> orderCreate(@RequestBody OrderDto orderDto){
-        Order order = orderService.createOrder(orderDto);
+    public ResponseEntity<Order> orderCreate(@RequestBody Order order){
+        System.out.println("Pueba controlador");
+        this.orderService.createOrder(order);
+        System.out.println("cosas dto: " + order.getId());
         return new ResponseEntity<> (order, HttpStatus.CREATED);
     }
 

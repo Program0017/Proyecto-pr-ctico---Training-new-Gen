@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,19 +28,20 @@ public class OrderService {
     private IClientRepository clientRepository;
 
 
-    public Order createOrder(OrderDto orderDto) {
-        Product product = productRepository.findById(orderDto.getProduct_id().getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Order createOrder(Order order) {
+        Optional<Product> product = productRepository.findById(order.getProduct().getId());
 
-        Double price = product.getPrice();
-        Integer quantity = orderDto.getQuantity();
+        Double price = product.get().getPrice();
+        Integer quantity = order.getQuantity();
 
-        Order order = new Order();
-        order.setClient(orderDto.getClient_id());
-        order.setProduct(orderDto.getProduct_id());
-        order.setQuantity(orderDto.getQuantity());
-        order.setExtraInformation(orderDto.getExtraInformation());
+        System.out.println(product.get().getId());
 
-        order.setUUID(UUID.fromString(UUID.randomUUID().toString()));
+        order.setClient(order.getClient());
+        order.setProduct(order.getProduct());
+        order.setQuantity(order.getQuantity());
+        order.setExtraInformation(order.getExtraInformation());
+
+        order.setUuid(UUID.fromString(UUID.randomUUID().toString()));
 
         Double subTotal = SubTotalUtils.makeSubTotal(price , quantity);
         order.setSubTotal(subTotal);
@@ -50,6 +51,8 @@ public class OrderService {
 
         Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
         order.setGrandTotal(grandTotal);
+
+        System.out.println(order.getId());
 
         iOrderRepository.save(order);
         return order;
