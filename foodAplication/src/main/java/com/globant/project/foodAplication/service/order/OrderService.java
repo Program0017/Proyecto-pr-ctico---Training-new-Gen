@@ -1,5 +1,6 @@
 package com.globant.project.foodAplication.service.order;
 
+import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.OrderDto;
 import com.globant.project.foodAplication.model.order.Order;
 import com.globant.project.foodAplication.model.product.Product;
@@ -20,43 +21,43 @@ import java.util.UUID;
 @Service
 
 public class OrderService {
+
     @Autowired
     private IOrderRepository iOrderRepository;
+
     @Autowired
     private IProductRepository productRepository;
-    @Autowired
-    private IClientRepository clientRepository;
 
 
     public Order createOrder(Order order) {
-        Optional<Product> product = productRepository.findById(order.getProduct().getId());
+        try{
+            Optional<Product> productOptional = this.productRepository.findById(order.getProduct().getId());
+            if (productOptional.isPresent()) {
+                Product product = productOptional.get();
+                Double price = product.getPrice();
+                Integer quantity = order.getQuantity();
+                order.setClient(order.getClient());
+                order.setProduct(product);
+                order.setQuantity(quantity);
+                order.setExtraInformation(order.getExtraInformation());
 
-        Double price = product.get().getPrice();
-        Integer quantity = order.getQuantity();
+                order.setUuid(UUID.fromString(UUID.randomUUID().toString()));
 
-        System.out.println(product.get().getId());
+                Double subTotal = SubTotalUtils.makeSubTotal(price, quantity);
+                order.setSubTotal(subTotal);
 
-        order.setClient(order.getClient());
-        order.setProduct(order.getProduct());
-        order.setQuantity(order.getQuantity());
-        order.setExtraInformation(order.getExtraInformation());
+                Double tax = TaxUtils.makeTax(subTotal);
+                order.setTax(tax);
 
-        order.setUuid(UUID.fromString(UUID.randomUUID().toString()));
+                Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
+                order.setGrandTotal(grandTotal);
 
-        Double subTotal = SubTotalUtils.makeSubTotal(price , quantity);
-        order.setSubTotal(subTotal);
-
-        Double tax = TaxUtils.makeTax(subTotal);
-        order.setTax(tax);
-
-        Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
-        order.setGrandTotal(grandTotal);
-
-        System.out.println(order.getId());
-
-        iOrderRepository.save(order);
-        return order;
-
-
+                return this.iOrderRepository.save(order);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
+            }
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

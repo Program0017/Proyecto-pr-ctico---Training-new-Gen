@@ -19,7 +19,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id = 1;
+    private Integer id;
 
     @Column(unique = true)
     private  UUID uuid;

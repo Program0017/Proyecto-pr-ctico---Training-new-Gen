@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
 public class Seeders implements ApplicationRunner {
+
     @Autowired
     private IClientRepository clientRepository;
     @Override
@@ -15,7 +16,7 @@ public class Seeders implements ApplicationRunner {
         for (int i = 0; i < 10; i++) {
             Client client = new Client();
 
-            client.setId(1L);
+            client.setId(1);
             client.setName("Juanito");
             client.setPhone("313339228");
             client.setDocument("2005899019");

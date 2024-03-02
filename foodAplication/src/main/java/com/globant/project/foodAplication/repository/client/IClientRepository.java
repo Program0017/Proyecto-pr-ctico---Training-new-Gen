@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface IClientRepository extends CrudRepository<Client, Long> {
+public interface IClientRepository extends CrudRepository<Client, Integer> {
 
     Optional<Client> findByDocument(String document);
 

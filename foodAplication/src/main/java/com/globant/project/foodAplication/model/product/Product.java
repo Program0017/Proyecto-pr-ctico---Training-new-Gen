@@ -17,9 +17,8 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
 
     @Column(unique = true, length = 36, columnDefinition = "BINARY(16)")

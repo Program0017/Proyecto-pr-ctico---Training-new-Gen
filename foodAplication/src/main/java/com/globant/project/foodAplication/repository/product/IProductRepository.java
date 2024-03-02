@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface IProductRepository extends CrudRepository<Product, Long> {
+public interface IProductRepository extends CrudRepository<Product, Integer> {
 
     Optional<Product> findByUuid(UUID uuid);
 
