@@ -1,14 +1,15 @@
 package com.globant.project.foodAplication.commons.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class ClientDto {
 
+    private Integer id;
     private String document;
     private String name;
     private String email;
