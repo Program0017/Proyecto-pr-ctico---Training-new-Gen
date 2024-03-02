@@ -14,8 +14,8 @@ import java.util.Date;
 public class OrderDto {
 
     private Long id;
-    private Product product_id;
-    private Client client_id;
+    private Product product;
+    private Client client;
     private Integer quantity;
     private String extraInformation;
     private Date creationDateTime;

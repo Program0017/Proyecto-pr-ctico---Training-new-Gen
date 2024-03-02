@@ -22,8 +22,13 @@ public class ClientService {
 
     public String createClient(Client client) {
         try {
-            this.clientRepository.save(client);
-            return IResponse.CREATE_SUCCESS;
+            Optional<Client> find = this.clientRepository.findById(client.getId());
+            if (!find.isPresent()){
+                this.clientRepository.save(client);
+                return IResponse.CREATE_SUCCESS;
+            }else {
+                return IResponse.CREATE_FAIL;
+            }
         } catch (Exception e) {
             return IResponse.INTERNAL_SERVER_ERROR + e;
         }

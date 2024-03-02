@@ -1,5 +1,4 @@
 package com.globant.project.foodAplication.model.client;
-import java.util.UUID;
 
 
 import jakarta.persistence.*;
@@ -20,7 +19,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
 

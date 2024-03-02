@@ -24,7 +24,7 @@ public class ClientController {
 
     @GetMapping(IClientEndPoints.CLIENT_GET_URL)
     public ResponseEntity<Client> getUser(@PathVariable("document") String document){
-        return new ResponseEntity<Client>(clientService.findByDocument(document), HttpStatus.OK);
+        return new ResponseEntity<>(clientService.findByDocument(document), HttpStatus.OK);
     }
 
     @PutMapping(IClientEndPoints.CLIENT_UPDATE_URL)
