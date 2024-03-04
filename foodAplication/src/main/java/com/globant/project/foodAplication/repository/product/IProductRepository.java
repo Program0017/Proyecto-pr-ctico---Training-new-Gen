@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface IProductRepository extends CrudRepository<Product, Integer> {
 
     Optional<Product> findByUuid(UUID uuid);
+    Optional<Product> findByFantasyName(String fantasyName);
 
 
 

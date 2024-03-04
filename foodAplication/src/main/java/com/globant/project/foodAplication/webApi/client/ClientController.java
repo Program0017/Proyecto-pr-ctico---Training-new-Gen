@@ -18,8 +18,9 @@ public class ClientController {
 
 
     @PostMapping(IClientEndPoints.CLIENT_CREATE_URL)
-    public String createClient(@RequestBody Client client){
-        return this.clientService.createClient(client);
+    public ResponseEntity<Client> createClient(@RequestBody Client client){
+        Client newClient = clientService.createClient(client);
+        return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 
     @GetMapping(IClientEndPoints.CLIENT_GET_URL)
@@ -30,12 +31,12 @@ public class ClientController {
     @PutMapping(IClientEndPoints.CLIENT_UPDATE_URL)
     public ResponseEntity<Client> update(@PathVariable("document") String document, @RequestBody Client client){
         Client updatedClient = clientService.updateClient(document, client);
-        return new ResponseEntity<>(updatedClient, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(IClientEndPoints.CLIENT_DESACTIVATE_URL)
     public ResponseEntity<Client> desactivate(@PathVariable("document") String document){
         Client desactivatedclient = clientService.desactivateClient(document);
-        return new ResponseEntity<>(desactivatedclient, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

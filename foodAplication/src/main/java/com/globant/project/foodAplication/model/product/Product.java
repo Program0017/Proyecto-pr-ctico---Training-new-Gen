@@ -22,7 +22,7 @@ public class Product {
 
 
     @Column(unique = true, length = 36, columnDefinition = "BINARY(16)")
-    private UUID uuid;
+    private UUID uuid = UUID.randomUUID();
 
     @Column(name = "fantasy_name")
     private String fantasyName;
