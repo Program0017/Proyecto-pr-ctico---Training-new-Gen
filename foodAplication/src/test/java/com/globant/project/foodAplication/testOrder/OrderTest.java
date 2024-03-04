@@ -1,5 +1,6 @@
 package com.globant.project.foodAplication.testOrder;
 
+import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.model.order.Order;
 import com.globant.project.foodAplication.model.product.Product;
 import com.globant.project.foodAplication.repository.order.IOrderRepository;
@@ -30,29 +31,40 @@ public class OrderTest {
     private OrderService orderService;
 
     @Test
-    public void testCreateOrderWhenProductExists() {
-        Order orderToCreate = new Order();
+    public void testCreateOrder() {
         Product product = new Product();
         product.setId(1);
-        orderToCreate.setProduct(product);
-        Integer quantity = 5;
-        Double price = 10.0;
-        Double subTotal = price * quantity;
-        Double tax = subTotal * 0.1;
-        Double grandTotal = subTotal + tax;
+        product.setPrice(10.0);
 
-        when(iProductRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        Client client = new Client();
+        client.setId(1);
+        client.setName("jhon");
+        client.setDocument("1110452096");
+        client.setEmail("jhoncastro2004eg@gmail.com");
+        client.setPhone("3005131873");
+        client.setDeliveryAddress("calle 129 sur");
+        client.setIsActive(true);
 
-        Order result = orderService.createOrder(orderToCreate);
+        Order order = new Order();
+        order.setProduct(product);
+        order.setQuantity(5);
+        order.setExtraInformation("Extra info");
+        order.setClient(client);
 
-        assertNotNull(result.getUuid());
-        assertEquals(orderToCreate.getClient(), result.getClient());
-        assertEquals(orderToCreate.getQuantity(), result.getQuantity());
-        assertEquals(orderToCreate.getExtraInformation(), result.getExtraInformation());
-        assertEquals(subTotal, result.getSubTotal());
-        assertEquals(tax, result.getTax());
-        assertEquals(grandTotal, result.getGrandTotal());
-        verify(iOrderRepository, times(1)).save(orderToCreate);
+        when(iProductRepository.findById(1)).thenReturn(Optional.of(product));
+
+        when(iOrderRepository.save(order)).thenReturn(order);
+
+        Order createdOrder = orderService.createOrder(order);
+
+        assertEquals(order.getProduct(), createdOrder.getProduct());
+        assertEquals(order.getQuantity(), createdOrder.getQuantity());
+        assertEquals(order.getExtraInformation(), createdOrder.getExtraInformation());
+        assertEquals(order.getClient(), createdOrder.getClient());
+        assertEquals(order.getSubTotal(), createdOrder.getSubTotal());
+        assertEquals(order.getTax(), createdOrder.getTax());
+        assertEquals(order.getGrandTotal(), createdOrder.getGrandTotal());
+        assertEquals(order.getUuid(), createdOrder.getUuid());
     }
 
 

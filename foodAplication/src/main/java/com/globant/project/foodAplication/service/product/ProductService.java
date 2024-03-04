@@ -21,7 +21,7 @@ public class ProductService {
         return this.productRepository.save(product); }
 
     public Product findByUUID(UUID uuid){
-        return this.productRepository.findByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product %d does not exist", uuid)));
+        return this.productRepository.findByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public Product updateProduct(UUID uuid, Product product){
@@ -35,7 +35,7 @@ public class ProductService {
             return this.productRepository.save(existingProduct);
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Producto with id %d does not exist", uuid));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
     //pensar en metodo de resta de stock
@@ -46,7 +46,7 @@ public class ProductService {
             return this.productRepository.save(result.get());
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 }
