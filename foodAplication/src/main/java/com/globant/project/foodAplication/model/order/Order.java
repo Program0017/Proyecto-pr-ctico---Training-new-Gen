@@ -56,8 +56,7 @@ public class Order {
     @Column(name = "delivered")
     private Boolean isDelivered = false;
 
-    public Order(LocalDateTime creationDateTime, Boolean isDelivered) {
-        this.creationDateTime = LocalDateTime.now();
+    public Order(Boolean isDelivered) {
         this.isDelivered = false;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class OrderService {
                 order.setProduct(product);
                 order.setQuantity(quantity);
                 order.setExtraInformation(order.getExtraInformation());
+                order.setCreationDateTime(LocalDateTime.now());
 
                 order.setUuid(UUID.fromString(UUID.randomUUID().toString()));
 
