@@ -17,7 +17,7 @@ public class ClientService {
     private IClientRepository clientRepository;
 
     public Client findByDocument(String document){
-        return clientRepository.findByDocument(document).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User %d with this document does not exist", document)));
+        return clientRepository.findByDocument(document).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public String createClient(Client client) {
@@ -41,7 +41,7 @@ public class ClientService {
         if (result.isPresent()){
             return this.clientRepository.save(client);
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
     }
@@ -52,6 +52,7 @@ public class ClientService {
         result.get().setIsActive(!result.get().getIsActive());
         return this.clientRepository.save(result.get());
     }else{
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }}
+    //9d5b594f0bcfee5638dd0db7f002f1da6a918289
 }
