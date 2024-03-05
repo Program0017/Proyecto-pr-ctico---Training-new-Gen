@@ -2,7 +2,7 @@ package com.globant.project.foodAplication.testClient;
 
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.ClientDto;
-import com.globant.project.foodAplication.model.client.ClientEntity;
+import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.repository.client.IClientRepository;
 import com.globant.project.foodAplication.service.client.ClientService;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientEntityTest {
+public class ClientTest {
 
     @Mock
     private IClientRepository clientRepository;
@@ -34,21 +34,21 @@ public class ClientEntityTest {
                 .phone("3333335")
                 .deliveryAddress("Avenida Siempre vivo")
                 .build();
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setId(1);
-        clientEntity.setDocument("1004798908");
-        clientEntity.setName("fulanito");
-        clientEntity.setEmail("pepito32@gmail.com");
-        clientEntity.setPhone("3333335");
-        clientEntity.setDeliveryAddress("Avenida Siempre vivo");
+        Client client = new Client();
+        client.setId(1);
+        client.setDocument("1004798908");
+        client.setName("fulanito");
+        client.setEmail("pepito32@gmail.com");
+        client.setPhone("3333335");
+        client.setDeliveryAddress("Avenida Siempre vivo");
 
 
         when(clientRepository.findById(1)).thenReturn(Optional.empty());
 
-        String result = clientService.createClient(clientEntity);
+        String result = clientService.createClient(client);
         assertEquals(IResponse.CREATE_SUCCESS, result);
 
-        verify(clientRepository, times(1)).save(clientEntity);
+        verify(clientRepository, times(1)).save(client);
         verify(clientRepository, times(1)).findById(1);
 
         verifyNoMoreInteractions(clientRepository);
@@ -64,18 +64,18 @@ public class ClientEntityTest {
                 .phone("3333335")
                 .deliveryAddress("Avenida Siempre vivo")
                 .build();
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setId(1);
-        clientEntity.setDocument("1004798908");
-        clientEntity.setName("fulanito");
-        clientEntity.setEmail("pepito32@gmail.com");
-        clientEntity.setPhone("3333335");
-        clientEntity.setDeliveryAddress("Avenida Siempre vivo");
+        Client client = new Client();
+        client.setId(1);
+        client.setDocument("1004798908");
+        client.setName("fulanito");
+        client.setEmail("pepito32@gmail.com");
+        client.setPhone("3333335");
+        client.setDeliveryAddress("Avenida Siempre vivo");
 
 
-        when(clientRepository.findById(1)).thenReturn(Optional.of(clientEntity));
+        when(clientRepository.findById(1)).thenReturn(Optional.of(client));
 
-        String result = clientService.createClient(clientEntity);
+        String result = clientService.createClient(client);
         assertEquals(IResponse.CREATE_FAIL, result);
 
         verify(clientRepository, times(1)).findById(1);
@@ -86,17 +86,17 @@ public class ClientEntityTest {
     @Test
     public void testUpdateClientWhenClientExists() {
         String document = "1004798908";
-        ClientEntity existingClientEntity = new ClientEntity();
-        ClientEntity updatedClientEntity = new ClientEntity();
+        Client existingClient = new Client();
+        Client updatedClient = new Client();
 
-        when(clientRepository.findByDocument(document)).thenReturn(Optional.of(existingClientEntity));
-        when(clientRepository.save(updatedClientEntity)).thenReturn(updatedClientEntity);
+        when(clientRepository.findByDocument(document)).thenReturn(Optional.of(existingClient));
+        when(clientRepository.save(updatedClient)).thenReturn(updatedClient);
 
-        ClientEntity result = clientService.updateClient(document, updatedClientEntity);
+        Client result = clientService.updateClient(document, updatedClient);
 
-        assertEquals(updatedClientEntity, result);
+        assertEquals(updatedClient, result);
         verify(clientRepository, times(1)).findByDocument(document);
-        verify(clientRepository, times(1)).save(updatedClientEntity);
+        verify(clientRepository, times(1)).save(updatedClient);
     }
 
 
@@ -104,16 +104,16 @@ public class ClientEntityTest {
     public void testDesactivateClientWhenClientExists() {
 
         String document = "123456789";
-        ClientEntity existingClientEntity = new ClientEntity();
-        existingClientEntity.setIsActive(true);
+        Client existingClient = new Client();
+        existingClient.setIsActive(true);
 
-        when(clientRepository.findByDocument(document)).thenReturn(Optional.of(existingClientEntity));
-        when(clientRepository.save(existingClientEntity)).thenReturn(existingClientEntity);
+        when(clientRepository.findByDocument(document)).thenReturn(Optional.of(existingClient));
+        when(clientRepository.save(existingClient)).thenReturn(existingClient);
 
-        ClientEntity result = clientService.desactivateClient(document);
+        Client result = clientService.desactivateClient(document);
 
         assertFalse(result.getIsActive());
         verify(clientRepository, times(1)).findByDocument(document);
-        verify(clientRepository, times(1)).save(existingClientEntity);
+        verify(clientRepository, times(1)).save(existingClient);
     }
 }

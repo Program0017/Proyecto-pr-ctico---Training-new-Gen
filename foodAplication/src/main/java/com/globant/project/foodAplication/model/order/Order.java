@@ -1,7 +1,7 @@
 package com.globant.project.foodAplication.model.order;
 
 import com.globant.project.foodAplication.model.product.ProductEntity;
-import com.globant.project.foodAplication.model.client.ClientEntity;
+import com.globant.project.foodAplication.model.client.Client;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +30,7 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private ClientEntity clientEntity;
+    private Client client;
 
     @Column(name = "quantity")
     private Integer quantity;

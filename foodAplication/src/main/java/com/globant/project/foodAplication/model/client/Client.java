@@ -10,24 +10,24 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "clients", indexes = {
-        @Index(columnList = "document", unique = true),
-        @Index(columnList = "email", unique = true),
-        @Index(columnList = "phone", unique = true)
-})
-public class ClientEntity {
+@Table(name = "clients")
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
+    @Column(unique = true)
     private String document;
 
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String phone;
 
+    @Column(unique = true)
     private String deliveryAddress;
 
     private Boolean isActive = true;
