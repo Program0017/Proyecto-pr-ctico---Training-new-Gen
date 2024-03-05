@@ -35,7 +35,7 @@ public class OrderService {
                 ProductEntity productEntity = productOptional.get();
                 Double price = productEntity.getPrice();
                 Integer quantity = order.getQuantity();
-                order.setClient(order.getClient());
+                order.setClientEntity(order.getClientEntity());
                 order.setProductEntity(productEntity);
                 order.setQuantity(quantity);
                 order.setExtraInformation(order.getExtraInformation());
