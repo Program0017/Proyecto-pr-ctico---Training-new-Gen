@@ -1,5 +1,8 @@
 package com.globant.project.foodAplication.service.product;
 
+import com.globant.project.foodAplication.commons.dto.ProductDtoRequest;
+import com.globant.project.foodAplication.commons.dto.ProductDtoResponse;
+import com.globant.project.foodAplication.mapper.ProductMapper;
 import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import com.globant.project.foodAplication.utils.product.ProductValidation;
@@ -17,49 +20,55 @@ public class ProductService {
     @Autowired
     private IProductRepository productRepository;
 
-    public ProductEntity createProduct(ProductEntity productEntity){
-        Optional<ProductEntity> existProduct = productRepository.findByFantasyName(productEntity.getFantasyName().toUpperCase());
-        ProductValidation.productPresentValidation(existProduct, productEntity.getFantasyName());
+    @Autowired
+    private ProductMapper productMapper;
+
+    public ProductDtoResponse createProduct(ProductDtoRequest productDto){
+        Optional<ProductEntity> existProduct = productRepository.findByFantasyName(productDto.getFantasyName().toUpperCase());
+        ProductValidation.productPresentValidation(existProduct, productDto.getFantasyName());
+        ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
         ProductValidation.productTotalValidation(productEntity);
 
-        String upperCaseFantasyName = productEntity.getFantasyName().toUpperCase();
-        productEntity.setFantasyName(upperCaseFantasyName);
-        return productRepository.save(productEntity); }
+        String upperCaseFantasyName = productDto.getFantasyName().toUpperCase();
+        productDto.setFantasyName(upperCaseFantasyName);
+        return productMapper.mapEntityToDto(productRepository.save(productEntity)); }
 
-    public ProductEntity findByUUID(UUID uuidProduct){
+    public ProductDtoResponse findByUUID(UUID uuidProduct){
         Optional<ProductEntity> product = productRepository.findByUuid(uuidProduct);
         ProductValidation.productEmptyValidation(product);
         ProductValidation.productFormatUuid(uuidProduct);
 
-        return product.get();    }
+        return productMapper.mapEntityToDto(product.get());
+    }
 
-    public ProductEntity updateProduct(UUID uuid, ProductEntity productEntity){
+    public ProductDtoResponse updateProduct(UUID uuid, ProductDtoRequest productDto){
         Optional<ProductEntity> existingProduct = productRepository.findByUuid(uuid);
         ProductValidation.productEmptyValidation(existingProduct);
+        ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
         ProductValidation.productEqualValidation(existingProduct, productEntity);
 
-        Optional<ProductEntity> otherProduct = productRepository.findByFantasyName(productEntity.getFantasyName());
+        Optional<ProductEntity> otherProduct = productRepository.findByFantasyName(productDto.getFantasyName());
         ProductValidation.productFantasyNameValidation(otherProduct);
 
-        otherProduct = productRepository.findByFantasyName(productEntity.getFantasyName());
+        otherProduct = productRepository.findByFantasyName(productDto.getFantasyName());
         ProductValidation.productFantasyNameUUIDValidation(otherProduct, uuid);
 
         ProductValidation.productTotalValidation(productEntity);
 
-        existingProduct.get().setFantasyName(productEntity.getFantasyName());
-        existingProduct.get().setCategory(productEntity.getCategory());
-        existingProduct.get().setAvailable(productEntity.getAvailable());
-        existingProduct.get().setDescription(productEntity.getDescription());
-        existingProduct.get().setPrice(productEntity.getPrice());
+        existingProduct.get().setFantasyName(productDto.getFantasyName());
+        existingProduct.get().setCategory(productDto.getCategory());
+        existingProduct.get().setAvailable(productDto.getAvailable());
+        existingProduct.get().setDescription(productDto.getDescription());
+        existingProduct.get().setPrice(productDto.getPrice());
 
-        return productRepository.save(existingProduct.get());
+        return productMapper.mapEntityToDto(productRepository.save(existingProduct.get()));
     }
     //pensar en metodo de resta de stock
-    public ProductEntity desactivateProduct(UUID uuid){
+    public ProductDtoResponse desactivateProduct(UUID uuid){
         Optional<ProductEntity> result = this.productRepository.findByUuid(uuid);
         if(result.isPresent()){
             result.get().setAvailable((!result.get().getAvailable()));
-            return this.productRepository.save(result.get());
+            return productMapper.mapEntityToDto(this.productRepository.save(result.get()));
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));

@@ -35,8 +35,6 @@ public class ClientService {
             }
     }
 
-
-
     public ClientEntity updateClient(String document, ClientEntity clientEntity) {
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
@@ -44,7 +42,6 @@ public class ClientService {
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
         }
-
     }
 
     public ClientEntity desactivateClient(String document) {

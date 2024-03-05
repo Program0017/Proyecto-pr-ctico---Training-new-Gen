@@ -8,7 +8,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class productDto {
+public class ProductDtoRequest {
 
     private String fantasyName;
     private Category category;
