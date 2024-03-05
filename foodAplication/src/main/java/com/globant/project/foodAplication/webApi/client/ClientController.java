@@ -1,7 +1,8 @@
 package com.globant.project.foodAplication.webApi.client;
 
 import com.globant.project.foodAplication.commons.constants.endPoints.client.IClientEndPoints;
-import com.globant.project.foodAplication.model.client.Client;
+import com.globant.project.foodAplication.commons.dto.ClientDto;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,28 +16,26 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-
-
     @PostMapping(IClientEndPoints.CLIENT_CREATE_URL)
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
-        Client newClient = clientService.createClient(client);
+    public ResponseEntity<ClientDto> createClient(@RequestBody ClientDto clientDto){
+        ClientDto newClient = clientService.createClient(clientDto);
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
-
+//Probar con dto los controlador -> proxima tarea
     @GetMapping(IClientEndPoints.CLIENT_GET_URL)
-    public ResponseEntity<Client> getUser(@PathVariable("document") String document){
+    public ResponseEntity<ClientEntity> getUser(@PathVariable("document") String document){
         return new ResponseEntity<>(clientService.findByDocument(document), HttpStatus.OK);
     }
 
     @PutMapping(IClientEndPoints.CLIENT_UPDATE_URL)
-    public ResponseEntity<Client> update(@PathVariable("document") String document, @RequestBody Client client){
-        Client updatedClient = clientService.updateClient(document, client);
+    public ResponseEntity<ClientEntity> update(@PathVariable("document") String document, @RequestBody ClientEntity clientEntity){
+        ClientEntity updatedClientEntity = clientService.updateClient(document, clientEntity);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(IClientEndPoints.CLIENT_DESACTIVATE_URL)
-    public ResponseEntity<Client> desactivate(@PathVariable("document") String document){
-        Client desactivatedclient = clientService.desactivateClient(document);
+    public ResponseEntity<ClientEntity> desactivate(@PathVariable("document") String document){
+        ClientEntity desactivatedclient = clientService.desactivateClient(document);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

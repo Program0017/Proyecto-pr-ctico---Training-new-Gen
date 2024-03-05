@@ -21,7 +21,6 @@ public class OrderController {
 
     @PostMapping(IOrderEndPoints.ORDER_CREATE_URL)
     public Order orderCreate(@RequestBody Order order){
-        System.out.println("Pueba controlador");
         return this.orderService.createOrder(order);
     }
 

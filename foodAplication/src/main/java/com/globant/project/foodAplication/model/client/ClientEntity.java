@@ -3,7 +3,7 @@ package com.globant.project.foodAplication.model.client;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+@Builder
 @Entity
 @Getter
 @Setter
@@ -15,8 +15,7 @@ import lombok.*;
         @Index(columnList = "email", unique = true),
         @Index(columnList = "phone", unique = true)
 })
-public class Client {
-
+public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

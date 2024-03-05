@@ -1,7 +1,7 @@
 package com.globant.project.foodAplication.webApi.product;
 
 import com.globant.project.foodAplication.commons.constants.endPoints.product.IProductEndPoints;
-import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,25 +18,25 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping(IProductEndPoints.PRODUCT_CREATE_URL)
-    public ResponseEntity<Product> createProduct (@RequestBody Product product){
-        Product newProduct = productService.createProduct(product);
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    public ResponseEntity<ProductEntity> createProduct (@RequestBody ProductEntity productEntity){
+        ProductEntity newProductEntity = productService.createProduct(productEntity);
+        return new ResponseEntity<>(newProductEntity, HttpStatus.CREATED);
     }
 
     @GetMapping(IProductEndPoints.PRODUCT_GET_URL)
-    public ResponseEntity<Product> productById (@PathVariable("uuid") UUID uuid){
-        return new ResponseEntity<Product>(productService.findByUUID(uuid), HttpStatus.OK);
+    public ResponseEntity<ProductEntity> productById (@PathVariable("uuid") UUID uuid){
+        return new ResponseEntity<ProductEntity>(productService.findByUUID(uuid), HttpStatus.OK);
     }
 
     @PutMapping(IProductEndPoints.PRODUCT_UPDATE_URL)
-    public ResponseEntity<Product> updateProduct(@PathVariable("uuid") UUID uuid , @RequestBody Product product){
-        Product updatedProduct = productService.updateProduct(uuid, product);
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    public ResponseEntity<ProductEntity> updateProduct(@PathVariable("uuid") UUID uuid , @RequestBody ProductEntity productEntity){
+        ProductEntity updatedProductEntity = productService.updateProduct(uuid, productEntity);
+        return new ResponseEntity<>(updatedProductEntity, HttpStatus.OK);
     }
 
     @PatchMapping(IProductEndPoints.PRODUCT_DESACTIVATE_URL)
-    public ResponseEntity<Product> deleteProduct(@PathVariable("uuid") UUID uuid ){
-        return new ResponseEntity<Product>(productService.desactivateProduct(uuid), HttpStatus.OK);
+    public ResponseEntity<ProductEntity> deleteProduct(@PathVariable("uuid") UUID uuid ){
+        return new ResponseEntity<ProductEntity>(productService.desactivateProduct(uuid), HttpStatus.OK);
     }
 
 

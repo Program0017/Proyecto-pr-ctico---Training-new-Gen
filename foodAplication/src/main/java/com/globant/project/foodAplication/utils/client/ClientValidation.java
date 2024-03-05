@@ -1,6 +1,6 @@
 package com.globant.project.foodAplication.utils.client;
 
-import com.globant.project.foodAplication.model.client.Client;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,35 +14,35 @@ public class ClientValidation {
         }
     }
 
-    public static void clientEmptyValidation(Optional<Client> client, String documentClient){
+    public static void clientEmptyValidation(Optional<ClientEntity> client, String documentClient){
         if (client.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("The client with document %s doesn't exist", documentClient));
         }
     }
 
-    public static void clientPresentValidation(Optional<Client> client, String documentClient){
+    public static void clientPresentValidation(Optional<ClientEntity> client, String documentClient){
         if (client.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("The client with document %s already exist", documentClient));
         }
     }
 
-    public static void clientTotalValidation(Client client){
-        if(client.getDocument().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, client.getDocument());
-        if(client.getEmail().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, client.getEmail());
-        if(client.getPhone().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, client.getPhone());
-        if(client.getDeliveryAddress().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, client.getDeliveryAddress());
+    public static void clientTotalValidation(ClientEntity clientEntity){
+        if(clientEntity.getDocument().length() < 6)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, clientEntity.getDocument());
+        if(clientEntity.getEmail().length() < 6)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, clientEntity.getEmail());
+        if(clientEntity.getPhone().length() < 6)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, clientEntity.getPhone());
+        if(clientEntity.getDeliveryAddress().length() < 6)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, clientEntity.getDeliveryAddress());
     }
 
-    public static void clientEqualValidation(Client oldClient, Client newClient){
-        if (oldClient.getDocument().equals(newClient.getDocument()) &&
-                oldClient.getName().equals(newClient.getName()) &&
-                oldClient.getEmail().equals(newClient.getEmail()) &&
-                oldClient.getDeliveryAddress().equals(newClient.getDeliveryAddress()) &&
-                oldClient.getPhone().equals(newClient.getPhone())
+    public static void clientEqualValidation(ClientEntity oldClientEntity, ClientEntity newClientEntity){
+        if (oldClientEntity.getDocument().equals(newClientEntity.getDocument()) &&
+                oldClientEntity.getName().equals(newClientEntity.getName()) &&
+                oldClientEntity.getEmail().equals(newClientEntity.getEmail()) &&
+                oldClientEntity.getDeliveryAddress().equals(newClientEntity.getDeliveryAddress()) &&
+                oldClientEntity.getPhone().equals(newClientEntity.getPhone())
         ) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The request failed because the client is equal, it doesn't have different values");
         }

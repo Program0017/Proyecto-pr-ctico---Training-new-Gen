@@ -1,10 +1,8 @@
 package com.globant.project.foodAplication.service.order;
 
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
-import com.globant.project.foodAplication.commons.dto.OrderDto;
 import com.globant.project.foodAplication.model.order.Order;
-import com.globant.project.foodAplication.model.product.Product;
-import com.globant.project.foodAplication.repository.client.IClientRepository;
+import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.order.IOrderRepository;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import com.globant.project.foodAplication.utils.GrandTotalUtils;
@@ -32,13 +30,13 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         try{
-            Optional<Product> productOptional = this.productRepository.findById(order.getProduct().getId());
+            Optional<ProductEntity> productOptional = this.productRepository.findById(order.getProductEntity().getId());
             if (productOptional.isPresent()) {
-                Product product = productOptional.get();
-                Double price = product.getPrice();
+                ProductEntity productEntity = productOptional.get();
+                Double price = productEntity.getPrice();
                 Integer quantity = order.getQuantity();
-                order.setClient(order.getClient());
-                order.setProduct(product);
+                order.setClientEntity(order.getClientEntity());
+                order.setProductEntity(productEntity);
                 order.setQuantity(quantity);
                 order.setExtraInformation(order.getExtraInformation());
                 order.setCreationDateTime(LocalDateTime.now());

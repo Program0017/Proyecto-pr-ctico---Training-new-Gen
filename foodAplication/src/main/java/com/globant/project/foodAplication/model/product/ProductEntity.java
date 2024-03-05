@@ -1,6 +1,5 @@
 package com.globant.project.foodAplication.model.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.globant.project.foodAplication.model.category.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "products")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

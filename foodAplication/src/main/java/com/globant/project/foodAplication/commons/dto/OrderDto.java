@@ -1,7 +1,7 @@
 package com.globant.project.foodAplication.commons.dto;
 
-import com.globant.project.foodAplication.model.client.Client;
-import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.model.client.ClientEntity;
+import com.globant.project.foodAplication.model.product.ProductEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +14,8 @@ import java.util.Date;
 public class OrderDto {
 
     private Long id;
-    private Product product;
-    private Client client;
+    private ProductEntity productEntity;
+    private ClientEntity clientEntity;
     private Integer quantity;
     private String extraInformation;
     private Date creationDateTime;
