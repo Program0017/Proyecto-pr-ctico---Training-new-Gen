@@ -26,8 +26,8 @@ public class ProductController {
     public ResponseEntity<ProductDtoResponse> createProduct (@RequestBody ProductDtoRequest productDto){
 
         ProductEntity newProductEntity = productMapper.mapDtoToEntity(productDto);
-        ProductDtoResponse productDto1 = productService.createProduct(productDto);
-
+        productService.createProduct(productDto);
+        ProductDtoResponse productDto1 = productMapper.mapEntityToDto(newProductEntity);
         return new ResponseEntity<>(productDto1, HttpStatus.CREATED);
     }
 

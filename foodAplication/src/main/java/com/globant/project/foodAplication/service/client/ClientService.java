@@ -3,7 +3,7 @@ package com.globant.project.foodAplication.service.client;
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.ClientDto;
 import com.globant.project.foodAplication.mapper.ClientMapper;
-import com.globant.project.foodAplication.model.client.ClientEntity;
+import com.globant.project.foodAplication.model.client.Client;
 import com.globant.project.foodAplication.repository.client.IClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,34 +21,52 @@ public class ClientService {
     @Autowired
     private  ClientMapper clientMapper;
 
-    public ClientEntity findByDocument(String document){
-        return clientRepository.findByDocument(document).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User %d with this document does not exist", document)));
+    public ClientDto findByDocument(String document){
+        Optional<Client> result = this.clientRepository.findByDocument(document);
+        if (result.isPresent()){
+            Client client = result.get();
+            return clientMapper.mapEntityDtoTo(client);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
+        }
+
     }
 
     public ClientDto createClient(ClientDto clientDto) {
+<<<<<<< HEAD
             Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
+=======
+            Optional<Client> find = this.clientRepository.findByDocument(clientDto.getDocument());
+>>>>>>> 4a3bd8605b5855ee70ae4b83f577bef6c726f79a
             if (!find.isPresent()){
-                ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
-                return clientMapper.mapEntityDtoTo(clientRepository.save(clientEntity));
+                Client client = clientMapper.mapDtoToEntity(clientDto);
+                return clientMapper.mapEntityDtoTo(clientRepository.save(client));
             }else {
+<<<<<<< HEAD
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with document %s does not exist", clientDto.getDocument()));
+=======
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
+>>>>>>> 4a3bd8605b5855ee70ae4b83f577bef6c726f79a
             }
     }
 
-    public ClientEntity updateClient(String document, ClientEntity clientEntity) {
-        Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
+    public ClientDto updateClient(String document, ClientDto clientDto) {
+        Optional<Client> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
-            return this.clientRepository.save(clientEntity);
+            Client client = clientMapper.mapDtoToEntity(clientDto);
+            return clientMapper.mapEntityDtoTo(clientRepository.save(client));
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
         }
     }
 
-    public ClientEntity desactivateClient(String document) {
-        Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
+    public ClientDto desactivateClient(String document) {
+        Optional<Client> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
-        result.get().setIsActive(!result.get().getIsActive());
-        return this.clientRepository.save(result.get());
+        Client client = result.get();
+        client.setIsActive(!client.getIsActive());
+        Client updatedClient = this.clientRepository.save(client);
+            return clientMapper.mapEntityDtoTo(updatedClient);
     }else{
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
     }}
