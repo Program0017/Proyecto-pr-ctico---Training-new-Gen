@@ -30,7 +30,7 @@ public class ProductService {
         ProductValidation.productTotalValidation(productEntity);
 
         String upperCaseFantasyName = productDto.getFantasyName().toUpperCase();
-        productDto.setFantasyName(upperCaseFantasyName);
+        productEntity.setFantasyName(upperCaseFantasyName);
         return productMapper.mapEntityToDto(productRepository.save(productEntity)); }
 
     public ProductDtoResponse findByUUID(UUID uuidProduct){

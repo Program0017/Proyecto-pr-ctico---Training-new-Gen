@@ -17,6 +17,7 @@ public class ProductMapper {
                 .category(productDto.getCategory())
                 .price(productDto.getPrice())
                 .available(productDto.getAvailable())
+                .uuid(UUID.randomUUID())
                 .build();
     }
 
