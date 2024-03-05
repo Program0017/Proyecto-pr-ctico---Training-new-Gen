@@ -20,6 +20,8 @@ public class ClientMapper {
         clientDto.setDocument(clientEntity.getDocument());
         clientDto.setEmail(clientEntity.getEmail());
         clientDto.setName(clientEntity.getName());
+        clientDto.setDeliveryAddress(clientEntity.getDeliveryAddress());
+        clientDto.setPhone(clientEntity.getPhone());
         return clientDto;
     }
 

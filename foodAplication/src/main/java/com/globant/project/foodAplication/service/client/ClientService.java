@@ -26,12 +26,12 @@ public class ClientService {
     }
 
     public ClientDto createClient(ClientDto clientDto) {
-            Optional<ClientEntity> find = this.clientRepository.findById(clientDto.getId());
+            Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
             if (!find.isPresent()){
                 ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
                 return clientMapper.mapEntityDtoTo(clientRepository.save(clientEntity));
             }else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", clientDto.getId()));
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with document %s does not exist", clientDto.getDocument()));
             }
     }
 
