@@ -20,10 +20,10 @@ public class OrderDto {
     private Integer quantity;
     private String extraInformation;
     private LocalDateTime creationDateTime;
-    private LocalDateTime deleveryDate;
+    private LocalDateTime deliveryDate;
     private Double tax;
     private Double grandTotal;
     private Double subTotal;
-    private Boolean isDelivered;
+    private Boolean isDelivered = false;
     private UUID uuid;
 }

@@ -15,7 +15,7 @@ public class ClientMapper {
                 .document(clientDto.getDocument())
                 .phone(clientDto.getPhone())
                 .deliveryAddress(clientDto.getDeliveryAddress())
-                .isActive(clientDto.getIsABoolean())
+                .isActive(clientDto.getIsActive())
                 .build();
     }
     public  ClientDto mapEntityToDto(ClientEntity clientEntity){
@@ -25,7 +25,7 @@ public class ClientMapper {
         clientDto.setDocument(clientEntity.getDocument());
         clientDto.setPhone(clientEntity.getPhone());
         clientDto.setDeliveryAddress(clientEntity.getDeliveryAddress());
-        clientDto.setIsABoolean(clientEntity.getIsActive());
+        clientDto.setIsActive(clientEntity.getIsActive());
         return clientDto;
     }
 

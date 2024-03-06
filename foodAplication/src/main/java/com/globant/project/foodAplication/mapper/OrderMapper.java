@@ -11,14 +11,15 @@ public class OrderMapper {
                 .product(orderDto.getProduct())
                 .client(orderDto.getClient())
                 .quantity(orderDto.getQuantity())
-                .quantity(Integer.valueOf(orderDto.getExtraInformation()))
+                .quantity(orderDto.getQuantity())
                 .creationDateTime(orderDto.getCreationDateTime())
-                .deliveryDate(orderDto.getDeleveryDate())
+                .deliveryDate(orderDto.getDeliveryDate())
                 .tax(orderDto.getTax())
                 .grandTotal(orderDto.getGrandTotal())
                 .subTotal(orderDto.getSubTotal())
                 .isDelivered(orderDto.getIsDelivered())
                 .uuid(orderDto.getUuid())
+                .extraInformation(orderDto.getExtraInformation())
                 .build();
 
 
@@ -29,13 +30,14 @@ public class OrderMapper {
         orderDto.setProduct(orderEntity.getProduct());
         orderDto.setClient(orderEntity.getClient());
         orderDto.setQuantity(orderEntity.getQuantity());
-        orderDto.setCreationDateTime((orderEntity.getCreationDateTime());
-        orderDto.setDeleveryDate(orderEntity.getDeliveryDate());
+        orderDto.setCreationDateTime(orderEntity.getCreationDateTime());
+        orderDto.setDeliveryDate(orderEntity.getDeliveryDate());
         orderDto.setTax(orderEntity.getTax());
         orderDto.setGrandTotal(orderEntity.getGrandTotal());
         orderDto.setSubTotal(orderEntity.getSubTotal());
         orderDto.setIsDelivered(orderEntity.getIsDelivered());
         orderDto.setUuid(orderEntity.getUuid());
+        orderDto.setExtraInformation(orderEntity.getExtraInformation());
         return orderDto;
     }
 
