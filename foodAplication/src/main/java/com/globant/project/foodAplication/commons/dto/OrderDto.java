@@ -6,22 +6,24 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Getter
 @Setter
 public class OrderDto {
 
-    private Long id;
-    private ProductEntity productEntity;
-    private ClientEntity clientEntity;
+    private ProductEntity product;
+    private ClientEntity client;
     private Integer quantity;
     private String extraInformation;
-    private Date creationDateTime;
-    private Date deleveryDate;
+    private LocalDateTime creationDateTime;
+    private LocalDateTime deleveryDate;
     private Double tax;
     private Double grandTotal;
     private Double subTotal;
     private Boolean isDelivered;
+    private UUID uuid;
 }

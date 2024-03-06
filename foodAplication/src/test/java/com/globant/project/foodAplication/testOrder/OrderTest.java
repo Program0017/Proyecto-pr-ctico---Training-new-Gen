@@ -1,7 +1,7 @@
 package com.globant.project.foodAplication.testOrder;
 
 import com.globant.project.foodAplication.model.client.ClientEntity;
-import com.globant.project.foodAplication.model.order.Order;
+import com.globant.project.foodAplication.model.order.OrderEntity;
 import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.order.IOrderRepository;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
@@ -45,22 +45,22 @@ public class OrderTest {
         clientEntity.setDeliveryAddress("calle 129 sur");
         clientEntity.setIsActive(true);
 
-        Order order = new Order();
-        order.setProductEntity(productEntity);
+        OrderEntity order = new OrderEntity();
+        order.setProduct(productEntity);
         order.setQuantity(5);
         order.setExtraInformation("Extra info");
-        order.setClientEntity(clientEntity);
+        order.setClient(clientEntity);
 
         when(iProductRepository.findById(1)).thenReturn(Optional.of(productEntity));
 
         when(iOrderRepository.save(order)).thenReturn(order);
 
-        Order createdOrder = orderService.createOrder(order);
+        OrderEntity createdOrder = orderService.createOrder(order);
 
-        assertEquals(order.getProductEntity(), createdOrder.getProductEntity());
+        assertEquals(order.getProduct(), createdOrder.getProduct());
         assertEquals(order.getQuantity(), createdOrder.getQuantity());
         assertEquals(order.getExtraInformation(), createdOrder.getExtraInformation());
-        assertEquals(order.getClientEntity(), createdOrder.getClientEntity());
+        assertEquals(order.getClient(), createdOrder.getClient());
         assertEquals(order.getSubTotal(), createdOrder.getSubTotal());
         assertEquals(order.getTax(), createdOrder.getTax());
         assertEquals(order.getGrandTotal(), createdOrder.getGrandTotal());

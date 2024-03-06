@@ -12,10 +12,11 @@ import java.util.UUID;
 @Data
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "deliveries")
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +27,11 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity productEntity;
+    private ProductEntity product;
 
     @OneToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private ClientEntity clientEntity;
+    private ClientEntity client;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -56,7 +57,7 @@ public class Order {
     @Column(name = "delivered")
     private Boolean isDelivered = false;
 
-    public Order(Boolean isDelivered) {
+    public OrderEntity(Boolean isDelivered) {
         this.isDelivered = false;
     }
 }

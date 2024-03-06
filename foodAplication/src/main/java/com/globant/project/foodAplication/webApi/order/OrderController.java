@@ -2,7 +2,7 @@ package com.globant.project.foodAplication.webApi.order;
 
 import com.globant.project.foodAplication.commons.constants.endPoints.order.IOrderEndPoints;
 import com.globant.project.foodAplication.commons.dto.OrderDto;
-import com.globant.project.foodAplication.model.order.Order;
+import com.globant.project.foodAplication.model.order.OrderEntity;
 import com.globant.project.foodAplication.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,9 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(IOrderEndPoints.ORDER_CREATE_URL)
-    public Order orderCreate(@RequestBody Order order){
-        return this.orderService.createOrder(order);
+    public ResponseEntity<OrderDto> orderCreate(@RequestBody OrderDto  orderDto){
+        OrderDto newOrder = orderService.createOrder(orderDto);
+        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
 
 
