@@ -30,12 +30,12 @@ public class ClientController {
     @PutMapping(IClientEndPoints.CLIENT_UPDATE_URL)
     public ResponseEntity<ClientDto> update(@PathVariable("document") String document, @RequestBody ClientDto clientDto){
         ClientDto updatedClientEntity = clientService.updateClient(document , clientDto);
-        return new ResponseEntity<>(updatedClientEntity, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(IClientEndPoints.CLIENT_DESACTIVATE_URL)
     public ResponseEntity<ClientDto> desactivate(@PathVariable("document") String document){
         ClientDto desactivatedclient = clientService.desactivateClient(document);
-        return new ResponseEntity<>(desactivatedclient, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

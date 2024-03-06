@@ -5,6 +5,7 @@ import com.globant.project.foodAplication.commons.dto.ClientDto;
 import com.globant.project.foodAplication.mapper.ClientMapper;
 import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.repository.client.IClientRepository;
+import com.globant.project.foodAplication.utils.client.ClientValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,53 +23,52 @@ public class ClientService {
     private  ClientMapper clientMapper;
 
     public ClientDto findByDocument(String document){
+        ClientValidation.documentValidation(document);
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
-        if (result.isPresent()){
-            ClientEntity clientEntity = result.get();
-            return clientMapper.mapEntityToDto(clientEntity);
-        }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
-        }
+        ClientValidation.clientEmptyValidation(result, document);
+
+        ClientEntity clientEntity = result.get();
+        return clientMapper.mapEntityToDto(clientEntity);
+
 
     }
 
     public ClientDto createClient(ClientDto clientDto) {
-            Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
-            if (!find.isPresent()){
-                ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
-                return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
-            }else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
-            }
+        ClientValidation.clientTotalValidation(clientMapper.mapDtoToEntity(clientDto));
+        Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
+        ClientValidation.clientPresentValidation(find, clientDto.getDocument());
+
+        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+        return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
+
     }
 
     public ClientDto updateClient(String document, ClientDto clientDto) {
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
-        if (result.isPresent()){
-            ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
-            ClientEntity client = result.get();
+        ClientValidation.clientEmptyValidation(result, document);
+        ClientValidation.clientEqualValidation(result.get(), clientMapper.mapDtoToEntity(clientDto));
+        ClientValidation.clientTotalValidation(clientMapper.mapDtoToEntity(clientDto));
 
-            client.setName(clientDto.getName());
-            client.setEmail(clientDto.getEmail());
-            client.setDocument(clientDto.getDocument());
-            client.setPhone(clientDto.getPhone());
-            client.setDeliveryAddress(clientDto.getDeliveryAddress());
-            clientRepository.save(client);
-            return clientMapper.mapEntityToDto(client);
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format(IResponse.NOT_FOUND));
-        }
+        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+        ClientEntity client = result.get();
+
+        client.setName(clientDto.getName());
+        client.setEmail(clientDto.getEmail());
+        client.setPhone(clientDto.getPhone());
+        client.setDeliveryAddress(clientDto.getDeliveryAddress());
+        clientRepository.save(client);
+        return clientMapper.mapEntityToDto(client);
+
     }
 
     public ClientDto desactivateClient(String document) {
+        ClientValidation.documentValidation(document);
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
-        if (result.isPresent()){
+        ClientValidation.clientEmptyValidation(result, document);
+
         ClientEntity clientEntity = result.get();
         clientEntity.setIsActive(!clientEntity.getIsActive());
         return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
-    }else{
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format(IResponse.NOT_FOUND));
-        }
     }
 
 }

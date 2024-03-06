@@ -37,13 +37,13 @@ public class ProductController {
     @PutMapping(IProductEndPoints.PRODUCT_UPDATE_URL)
     public ResponseEntity<ProductDto> updateProduct(@PathVariable("uuid") UUID uuid , @RequestBody ProductDto productDto){
         ProductDto productDto1 = productService.updateProduct(uuid, productDto);
-        return new ResponseEntity<>(productDto1, HttpStatus.OK);
+        return new ResponseEntity<>(productDto1, HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(IProductEndPoints.PRODUCT_DESACTIVATE_URL)
     public ResponseEntity<ProductDto> deleteProduct(@PathVariable("uuid") UUID uuid ){
         ProductDto productDto = productService.desactivateProduct(uuid);
-        return new ResponseEntity<ProductDto>(productDto, HttpStatus.OK);
+        return new ResponseEntity<ProductDto>(productDto, HttpStatus.NO_CONTENT);
     }
 
 

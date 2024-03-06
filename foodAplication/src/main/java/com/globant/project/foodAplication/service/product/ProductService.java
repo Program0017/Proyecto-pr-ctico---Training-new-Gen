@@ -9,12 +9,15 @@ import com.globant.project.foodAplication.repository.product.IProductRepository;
 import com.globant.project.foodAplication.utils.product.ProductValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@ControllerAdvice
 @Service
 public class ProductService {
 
@@ -31,7 +34,7 @@ public class ProductService {
         ProductValidation.productTotalValidation(productEntity);
 
         String upperCaseFantasyName = productDto.getFantasyName().toUpperCase();
-        productDto.setFantasyName(upperCaseFantasyName);
+        productEntity.setFantasyName(upperCaseFantasyName);
         return productMapper.mapEntityToDto(productRepository.save(productEntity)); }
 
     public ProductDto findByUUID(UUID uuidProduct){
