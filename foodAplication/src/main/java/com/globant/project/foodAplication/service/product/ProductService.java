@@ -1,7 +1,8 @@
 package com.globant.project.foodAplication.service.product;
 
+import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.ProductDtoRequest;
-import com.globant.project.foodAplication.commons.dto.ProductDtoResponse;
+import com.globant.project.foodAplication.commons.dto.ProductDto;
 import com.globant.project.foodAplication.mapper.ProductMapper;
 import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
@@ -23,7 +24,7 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
-    public ProductDtoResponse createProduct(ProductDtoRequest productDto){
+    public ProductDto createProduct(ProductDto productDto){
         Optional<ProductEntity> existProduct = productRepository.findByFantasyName(productDto.getFantasyName().toUpperCase());
         ProductValidation.productPresentValidation(existProduct, productDto.getFantasyName());
         ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
@@ -33,7 +34,7 @@ public class ProductService {
         productDto.setFantasyName(upperCaseFantasyName);
         return productMapper.mapEntityToDto(productRepository.save(productEntity)); }
 
-    public ProductDtoResponse findByUUID(UUID uuidProduct){
+    public ProductDto findByUUID(UUID uuidProduct){
         Optional<ProductEntity> product = productRepository.findByUuid(uuidProduct);
         ProductValidation.productEmptyValidation(product);
         ProductValidation.productFormatUuid(uuidProduct);
@@ -41,7 +42,7 @@ public class ProductService {
         return productMapper.mapEntityToDto(product.get());
     }
 
-    public ProductDtoResponse updateProduct(UUID uuid, ProductDtoRequest productDto){
+    public ProductDto updateProduct(UUID uuid, ProductDto productDto){
         Optional<ProductEntity> existingProduct = productRepository.findByUuid(uuid);
         ProductValidation.productEmptyValidation(existingProduct);
         ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
@@ -63,15 +64,14 @@ public class ProductService {
 
         return productMapper.mapEntityToDto(productRepository.save(existingProduct.get()));
     }
-    //pensar en metodo de resta de stock
-    public ProductDtoResponse desactivateProduct(UUID uuid){
+    public ProductDto desactivateProduct(UUID uuid){
         Optional<ProductEntity> result = this.productRepository.findByUuid(uuid);
         if(result.isPresent()){
             result.get().setAvailable((!result.get().getAvailable()));
             return productMapper.mapEntityToDto(this.productRepository.save(result.get()));
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
         }
     }
 }

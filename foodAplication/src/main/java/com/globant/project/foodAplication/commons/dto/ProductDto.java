@@ -10,13 +10,13 @@ import java.util.UUID;
 @Data
 @Getter
 @Setter
-public class ProductDtoResponse {
+public class ProductDto {
 
     private String fantasyName;
     private Category category;
     private String description;
     private Double price;
-    private Boolean available;
+    private Boolean available = true;
     private UUID uuid;
 
 }

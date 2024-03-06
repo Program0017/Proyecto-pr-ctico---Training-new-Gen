@@ -25,7 +25,7 @@ public class ClientService {
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
             ClientEntity clientEntity = result.get();
-            return clientMapper.mapEntityDtoTo(clientEntity);
+            return clientMapper.mapEntityToDto(clientEntity);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
         }
@@ -36,7 +36,7 @@ public class ClientService {
             Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
             if (!find.isPresent()){
                 ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
-                return clientMapper.mapEntityDtoTo(clientRepository.save(clientEntity));
+                return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
             }else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
             }
@@ -46,9 +46,17 @@ public class ClientService {
         Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
         if (result.isPresent()){
             ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
-            return clientMapper.mapEntityDtoTo(clientRepository.save(clientEntity));
+            ClientEntity client = result.get();
+
+            client.setName(clientDto.getName());
+            client.setEmail(clientDto.getEmail());
+            client.setDocument(clientDto.getDocument());
+            client.setPhone(clientDto.getPhone());
+            client.setDeliveryAddress(clientDto.getDeliveryAddress());
+            clientRepository.save(client);
+            return clientMapper.mapEntityToDto(client);
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format(IResponse.NOT_FOUND));
         }
     }
 
@@ -57,9 +65,10 @@ public class ClientService {
         if (result.isPresent()){
         ClientEntity clientEntity = result.get();
         clientEntity.setIsActive(!clientEntity.getIsActive());
-        ClientEntity updatedClientEntity = this.clientRepository.save(clientEntity);
-            return clientMapper.mapEntityDtoTo(updatedClientEntity);
+        return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
     }else{
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
-    }}
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format(IResponse.NOT_FOUND));
+        }
+    }
+
 }

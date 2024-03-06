@@ -27,6 +27,15 @@ public class OrderService {
     @Autowired
     private IProductRepository productRepository;
 
+    @Autowired
+    private SubTotalUtils subTotalUtils;
+
+    @Autowired
+    GrandTotalUtils grandTotalUtils;
+
+    @Autowired
+    private TaxUtils taxUtils;
+
 
     public Order createOrder(Order order) {
         try{

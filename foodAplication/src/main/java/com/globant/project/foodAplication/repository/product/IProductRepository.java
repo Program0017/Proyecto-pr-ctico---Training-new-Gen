@@ -13,6 +13,10 @@ public interface IProductRepository extends CrudRepository<ProductEntity, Intege
     Optional<ProductEntity> findByUuid(UUID uuid);
     Optional<ProductEntity> findByFantasyName(String fantasyName);
 
+    Boolean existsByFantasyName(String fantasyName);
+
+
+
 
 
 }

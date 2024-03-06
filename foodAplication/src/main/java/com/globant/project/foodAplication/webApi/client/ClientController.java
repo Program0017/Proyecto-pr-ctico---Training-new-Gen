@@ -2,6 +2,7 @@ package com.globant.project.foodAplication.webApi.client;
 
 import com.globant.project.foodAplication.commons.constants.endPoints.client.IClientEndPoints;
 import com.globant.project.foodAplication.commons.dto.ClientDto;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ClientController {
         ClientDto newClient = clientService.createClient(clientDto);
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
-//Probar con dto los controlador -> proxima tarea
+
     @GetMapping(IClientEndPoints.CLIENT_GET_URL)
     public ResponseEntity<ClientDto> getUser(@PathVariable("document") String document){
         return new ResponseEntity<>(clientService.findByDocument(document), HttpStatus.OK);
@@ -28,13 +29,13 @@ public class ClientController {
 
     @PutMapping(IClientEndPoints.CLIENT_UPDATE_URL)
     public ResponseEntity<ClientDto> update(@PathVariable("document") String document, @RequestBody ClientDto clientDto){
-        ClientDto updatedClientEntity = clientService.updateClient(document, clientDto);
-        return new ResponseEntity<>(updatedClientEntity, HttpStatus.NO_CONTENT);
+        ClientDto updatedClientEntity = clientService.updateClient(document , clientDto);
+        return new ResponseEntity<>(updatedClientEntity, HttpStatus.ACCEPTED);
     }
 
     @PatchMapping(IClientEndPoints.CLIENT_DESACTIVATE_URL)
     public ResponseEntity<ClientDto> desactivate(@PathVariable("document") String document){
         ClientDto desactivatedclient = clientService.desactivateClient(document);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(desactivatedclient, HttpStatus.ACCEPTED);
     }
 }
