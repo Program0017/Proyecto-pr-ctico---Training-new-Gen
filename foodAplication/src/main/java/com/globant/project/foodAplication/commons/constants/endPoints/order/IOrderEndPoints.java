@@ -4,7 +4,8 @@ public interface IOrderEndPoints {
 
     String ORDER_BASE_URL = "/orders";
     String ORDER_CREATE_URL = "/request";
-    String ORDER_BASE_GET = "/{uuid}/delivered/{timestamp}";
+
+    String ORDER_UPDATE_URL = "/{uuid}/delivered/{timestamp}";
 
 
 }

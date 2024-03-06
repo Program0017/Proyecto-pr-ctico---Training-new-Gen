@@ -77,4 +77,15 @@ public class OrderService {
         }
     }
 
+    public OrderDto orderFinish(UUID uuid, LocalDateTime deliveryDate) {
+        Optional<OrderEntity> result = orderRepository.findByUuid(uuid);
+        if (!result.isPresent()){
+            OrderEntity  orderEntity = result.get();
+            orderEntity.setDeliveryDate(deliveryDate);
+            orderEntity.setIsDelivered(true);
+            return orderMapper.mapEntitytoDto(orderRepository.save(orderEntity));
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format(IResponse.NOT_FOUND));
+        }
+    }
 }
