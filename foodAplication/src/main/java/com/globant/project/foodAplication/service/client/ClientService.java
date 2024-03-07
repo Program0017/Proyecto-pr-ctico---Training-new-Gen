@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,32 @@ public class ClientService {
         return clientMapper.mapEntityToDto(clientEntity);
 
 
+    }
+
+
+    public List<ClientEntity> getClients(String orderBy, String direction) {
+
+        if ("NAME".equals(orderBy)) {
+            if ("ASC".equals(direction)) {
+                return clientRepository.findAllByOrderByNameAsc();
+            } else {
+                return clientRepository.findAllByOrderByNameDesc();
+            }
+        }
+        else if ("ADDRESS".equals(orderBy)) {
+            if ("ASC".equals(direction)) {
+                return clientRepository.findAllByOrderByDeliveryAddressAsc();
+            } else {
+                return clientRepository.findAllByOrderByDeliveryAddressDesc();
+            }
+        }
+        else {
+            if ("ASC".equals(direction)) {
+                return clientRepository.findAllByOrderByDocumentAsc();
+            } else {
+                return clientRepository.findAllByOrderByDocumentDesc();
+            }
+        }
     }
 
     public ClientDto createClient(ClientDto clientDto) {
