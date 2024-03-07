@@ -34,11 +34,12 @@ public class ClientService {
     }
 
     public ClientDto createClient(ClientDto clientDto) {
-        ClientValidation.clientTotalValidation(clientMapper.mapDtoToEntity(clientDto));
+        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+        ClientValidation.clientTotalValidation(clientEntity);
         Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
         ClientValidation.clientPresentValidation(find, clientDto.getDocument());
 
-        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+
         return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
 
     }

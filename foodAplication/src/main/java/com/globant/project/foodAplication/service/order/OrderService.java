@@ -32,8 +32,6 @@ public class OrderService {
     @Autowired
     private IProductRepository productRepository;
     @Autowired
-    private SubTotalUtils subTotalUtils;
-    @Autowired
     private GrandTotalUtils grandTotalUtils;
     @Autowired
     private TaxUtils taxUtils;
