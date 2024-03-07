@@ -33,7 +33,6 @@ public class ProductController {
         ProductDto productDto = productService.findByUUID(uuid);
         return new ResponseEntity<ProductDto>(productDto, HttpStatus.OK);
     }
-
     @PutMapping(IProductEndPoints.PRODUCT_UPDATE_URL)
     public ResponseEntity<ProductDto> updateProduct(@PathVariable("uuid") UUID uuid , @RequestBody ProductDto productDto){
         ProductDto productDto1 = productService.updateProduct(uuid, productDto);
