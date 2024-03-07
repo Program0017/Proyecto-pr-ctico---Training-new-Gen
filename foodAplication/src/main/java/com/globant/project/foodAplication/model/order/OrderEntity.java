@@ -1,37 +1,37 @@
 package com.globant.project.foodAplication.model.order;
 
-import com.globant.project.foodAplication.model.product.Product;
-import com.globant.project.foodAplication.model.client.Client;
+import com.globant.project.foodAplication.model.product.ProductEntity;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Data
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "deliveries")
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(unique = true)
-    private  UUID UUID;
+    private  UUID uuid;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private ProductEntity product;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Client client;
+    private ClientEntity client;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -57,8 +57,7 @@ public class Order {
     @Column(name = "delivered")
     private Boolean isDelivered = false;
 
-    public Order(LocalDateTime creationDateTime, Boolean isDelivered) {
-        this.creationDateTime = LocalDateTime.now();
+    public OrderEntity(Boolean isDelivered) {
         this.isDelivered = false;
     }
 }

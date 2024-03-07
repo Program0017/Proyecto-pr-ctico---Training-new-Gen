@@ -1,21 +1,12 @@
 package com.globant.project.foodAplication.model.category;
 
-import jakarta.persistence.*;
-import lombok.*;
+public enum Category {
+    HAMBURGERS_AND_HOTDOGS,
+    CHICKEN,
+    FISH,
+    MEATS,
+    DESSERTS,
+    VEGAN_FOOD,
+    KIDS_MEALS
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "categories")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true)
-    private String label;
-
-    private String description;
 }

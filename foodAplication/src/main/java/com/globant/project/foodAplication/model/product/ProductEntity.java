@@ -12,21 +12,21 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "products")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+
 
     @Column(unique = true, length = 36, columnDefinition = "BINARY(16)")
-    private UUID uuid;
+    private UUID uuid = UUID.randomUUID();
 
     @Column(name = "fantasy_name")
     private String fantasyName;
 
-    @OneToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     private String description;
@@ -34,6 +34,5 @@ public class Product {
     private Double price;
 
     private Boolean available;
-
 
 }

@@ -1,8 +1,11 @@
 package com.globant.project.foodAplication.service.client;
 
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
-import com.globant.project.foodAplication.model.client.Client;
+import com.globant.project.foodAplication.commons.dto.ClientDto;
+import com.globant.project.foodAplication.mapper.ClientMapper;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.repository.client.IClientRepository;
+import com.globant.project.foodAplication.utils.client.ClientValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,37 +19,56 @@ public class ClientService {
     @Autowired
     private IClientRepository clientRepository;
 
-    public Client findByDocument(String document){
-        return clientRepository.findByDocument(document).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User %d with this document does not exist", document)));
-    }
+    @Autowired
+    private  ClientMapper clientMapper;
 
-    public String createClient(Client client) {
-        try {
-            this.clientRepository.save(client);
-            return IResponse.CREATE_SUCCESS;
-        } catch (Exception e) {
-            return IResponse.INTERNAL_SERVER_ERROR + e;
-        }
-    }
+    public ClientDto findByDocument(String document){
+        ClientValidation.documentValidation(document);
+        Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
+        ClientValidation.clientEmptyValidation(result, document);
 
+        ClientEntity clientEntity = result.get();
+        return clientMapper.mapEntityToDto(clientEntity);
 
-
-    public Client updateClient(String document, Client client) {
-        Optional<Client> result = this.clientRepository.findByDocument(document);
-        if (result.isPresent()){
-            return this.clientRepository.save(client);
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
-        }
 
     }
 
-    public Client desactivateClient(String document) {
-        Optional<Client> result = this.clientRepository.findByDocument(document);
-        if (result.isPresent()){
-        result.get().setIsActive(!result.get().getIsActive());
-        return this.clientRepository.save(result.get());
-    }else{
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,  String.format("User %d with this document does not exist", document));
-    }}
+    public ClientDto createClient(ClientDto clientDto) {
+        ClientValidation.clientTotalValidation(clientMapper.mapDtoToEntity(clientDto));
+        Optional<ClientEntity> find = this.clientRepository.findByDocument(clientDto.getDocument());
+        ClientValidation.clientPresentValidation(find, clientDto.getDocument());
+
+        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+        return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
+
+    }
+
+    public ClientDto updateClient(String document, ClientDto clientDto) {
+        Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
+        ClientValidation.clientEmptyValidation(result, document);
+        ClientValidation.clientEqualValidation(result.get(), clientMapper.mapDtoToEntity(clientDto));
+        ClientValidation.clientTotalValidation(clientMapper.mapDtoToEntity(clientDto));
+
+        ClientEntity clientEntity = clientMapper.mapDtoToEntity(clientDto);
+        ClientEntity client = result.get();
+
+        client.setName(clientDto.getName());
+        client.setEmail(clientDto.getEmail());
+        client.setPhone(clientDto.getPhone());
+        client.setDeliveryAddress(clientDto.getDeliveryAddress());
+        clientRepository.save(client);
+        return clientMapper.mapEntityToDto(client);
+
+    }
+
+    public ClientDto desactivateClient(String document) {
+        ClientValidation.documentValidation(document);
+        Optional<ClientEntity> result = this.clientRepository.findByDocument(document);
+        ClientValidation.clientEmptyValidation(result, document);
+
+        ClientEntity clientEntity = result.get();
+        clientEntity.setIsActive(!clientEntity.getIsActive());
+        return clientMapper.mapEntityToDto(clientRepository.save(clientEntity));
+    }
+
 }

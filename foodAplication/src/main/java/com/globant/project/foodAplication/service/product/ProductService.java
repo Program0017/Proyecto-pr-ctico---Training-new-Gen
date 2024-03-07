@@ -1,51 +1,80 @@
 package com.globant.project.foodAplication.service.product;
 
-import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.commons.constants.response.IResponse;
+import com.globant.project.foodAplication.commons.dto.ProductDtoRequest;
+import com.globant.project.foodAplication.commons.dto.ProductDto;
+import com.globant.project.foodAplication.mapper.ProductMapper;
+import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
+import com.globant.project.foodAplication.utils.product.ProductValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@ControllerAdvice
 @Service
 public class ProductService {
 
     @Autowired
     private IProductRepository productRepository;
 
-    public Product createProduct(Product product){ return this.productRepository.save(product); }
+    @Autowired
+    private ProductMapper productMapper;
 
-    public Product findByUUID(UUID uuid){
-        return this.productRepository.findByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product %d does not exist", uuid)));
+    public ProductDto createProduct(ProductDto productDto){
+        Optional<ProductEntity> existProduct = productRepository.findByFantasyName(productDto.getFantasyName().toUpperCase());
+        ProductValidation.productPresentValidation(existProduct, productDto.getFantasyName());
+        ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
+        ProductValidation.productTotalValidation(productEntity);
+
+        String upperCaseFantasyName = productDto.getFantasyName().toUpperCase();
+        productEntity.setFantasyName(upperCaseFantasyName);
+        return productMapper.mapEntityToDto(productRepository.save(productEntity)); }
+
+    public ProductDto findByUUID(UUID uuidProduct){
+        Optional<ProductEntity> product = productRepository.findByUuid(uuidProduct);
+        ProductValidation.productEmptyValidation(product);
+        ProductValidation.productFormatUuid(uuidProduct);
+
+        return productMapper.mapEntityToDto(product.get());
     }
 
-    public Product updateProduct(UUID uuid, Product product){
-        Optional<Product> result = this.productRepository.findByUuid(uuid);
-        if (result.isPresent()){
-            Product existingProduct = result.get();
+    public ProductDto updateProduct(UUID uuid, ProductDto productDto){
+        Optional<ProductEntity> existingProduct = productRepository.findByUuid(uuid);
+        ProductValidation.productEmptyValidation(existingProduct);
+        ProductEntity productEntity = productMapper.mapDtoToEntity(productDto);
+        ProductValidation.productEqualValidation(existingProduct, productEntity);
 
-            existingProduct.setFantasyName(product.getFantasyName());
-            existingProduct.setDescription(product.getDescription());
+        Optional<ProductEntity> otherProduct = productRepository.findByFantasyName(productDto.getFantasyName());
+        ProductValidation.productFantasyNameValidation(otherProduct);
 
-            return this.productRepository.save(existingProduct);
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Producto with id %d does not exist", uuid));
-        }
+        otherProduct = productRepository.findByFantasyName(productDto.getFantasyName());
+        ProductValidation.productFantasyNameUUIDValidation(otherProduct, uuid);
+
+        ProductValidation.productTotalValidation(productEntity);
+
+        existingProduct.get().setFantasyName(productDto.getFantasyName());
+        existingProduct.get().setCategory(productDto.getCategory());
+        existingProduct.get().setAvailable(productDto.getAvailable());
+        existingProduct.get().setDescription(productDto.getDescription());
+        existingProduct.get().setPrice(productDto.getPrice());
+
+        return productMapper.mapEntityToDto(productRepository.save(existingProduct.get()));
     }
-    //pensar en metodo de resta de stock
-    public Product deleteProduct(UUID uuid){
-        Optional<Product> result = this.productRepository.findByUuid(uuid);
+    public ProductDto desactivateProduct(UUID uuid){
+        Optional<ProductEntity> result = this.productRepository.findByUuid(uuid);
         if(result.isPresent()){
-            this.productRepository.delete(result.get());
-            return result.get();
+            result.get().setAvailable((!result.get().getAvailable()));
+            return productMapper.mapEntityToDto(this.productRepository.save(result.get()));
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product with id %d does not exist", uuid));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
         }
     }
-
 }

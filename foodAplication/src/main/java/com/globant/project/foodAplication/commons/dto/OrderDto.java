@@ -1,27 +1,29 @@
 package com.globant.project.foodAplication.commons.dto;
 
-import com.globant.project.foodAplication.model.client.Client;
-import com.globant.project.foodAplication.model.product.Product;
+import com.globant.project.foodAplication.model.client.ClientEntity;
+import com.globant.project.foodAplication.model.product.ProductEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Getter
 @Setter
 public class OrderDto {
 
-    private Long id;
-    private Product product_id;
-    private Client client_id;
+    private ProductEntity product;
+    private ClientEntity client;
     private Integer quantity;
     private String extraInformation;
-    private Date creationDateTime;
-    private Date deleveryDate;
+    private LocalDateTime creationDateTime;
+    private LocalDateTime deliveryDate;
     private Double tax;
     private Double grandTotal;
     private Double subTotal;
-    private Boolean isDelivered;
+    private Boolean isDelivered = false;
+    private UUID uuid;
 }
