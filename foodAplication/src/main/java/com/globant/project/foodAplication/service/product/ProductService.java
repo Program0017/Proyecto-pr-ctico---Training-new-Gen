@@ -59,6 +59,10 @@ public class ProductService {
 
         ProductValidation.productTotalValidation(productEntity);
 
+        ProductEntity product = existingProduct.get();
+
+        product.setFantasyName(productDto.getFantasyName());
+
         existingProduct.get().setFantasyName(productDto.getFantasyName());
         existingProduct.get().setCategory(productDto.getCategory());
         existingProduct.get().setAvailable(productDto.getAvailable());

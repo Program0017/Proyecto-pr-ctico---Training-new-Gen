@@ -79,7 +79,7 @@ public class OrderService {
 
     public OrderDto orderFinish(UUID uuid, LocalDateTime deliveryDate) {
         Optional<OrderEntity> result = orderRepository.findByUuid(uuid);
-        if (!result.isPresent()){
+        if (result.isPresent()){
             OrderEntity  orderEntity = result.get();
             orderEntity.setDeliveryDate(deliveryDate);
             orderEntity.setIsDelivered(true);
