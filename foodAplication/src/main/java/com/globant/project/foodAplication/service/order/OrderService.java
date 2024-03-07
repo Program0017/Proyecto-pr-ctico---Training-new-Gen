@@ -8,6 +8,7 @@ import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.repository.order.IOrderRepository;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import com.globant.project.foodAplication.utils.GrandTotalUtils;
+import com.globant.project.foodAplication.utils.RestQuantityUtils;
 import com.globant.project.foodAplication.utils.SubTotalUtils;
 import com.globant.project.foodAplication.utils.TaxUtils;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public class OrderService {
             if (productOptional.isPresent()) {
                 ProductEntity productEntity = productOptional.get();
                 Double price = productEntity.getPrice();
+                Integer stock = productEntity.getStock();
                 Integer quantity = orderDto.getQuantity();
                 orderDto.setClient(orderDto.getClient());
                 orderDto.setProduct(productEntity);
@@ -65,6 +67,13 @@ public class OrderService {
 
                 Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
                 orderDto.setGrandTotal(grandTotal);
+
+
+                Integer cantidad = RestQuantityUtils.restQuantity(quantity,stock);
+                productEntity.setStock(cantidad);
+                productRepository.save(productEntity);
+
+
 
                 OrderEntity order = orderMapper.mapDtoToEntity(orderDto);
                 return orderMapper.mapEntitytoDto(orderRepository.save(order));

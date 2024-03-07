@@ -18,6 +18,7 @@ public class ProductMapper {
                 .price(productDto.getPrice())
                 .available(productDto.getAvailable())
                 .uuid(UUID.randomUUID())
+                .stock(productDto.getStock())
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class ProductMapper {
         productDto.setDescription(productEntity.getDescription());
         productDto.setAvailable(productEntity.getAvailable());
         productDto.setUuid(productEntity.getUuid());
+        productDto.setStock(productEntity.getStock());
 
         return productDto;
     }

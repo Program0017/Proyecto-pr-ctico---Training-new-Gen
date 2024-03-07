@@ -18,5 +18,6 @@ public class ProductDto {
     private Double price;
     private Boolean available = true;
     private UUID uuid;
+    private Integer stock;
 
 }

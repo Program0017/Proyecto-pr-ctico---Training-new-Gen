@@ -35,4 +35,6 @@ public class ProductEntity {
 
     private Boolean available;
 
+    private Integer stock;
+
 }

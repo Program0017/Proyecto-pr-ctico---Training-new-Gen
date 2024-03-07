@@ -64,6 +64,7 @@ public class ProductService {
         existingProduct.get().setAvailable(productDto.getAvailable());
         existingProduct.get().setDescription(productDto.getDescription());
         existingProduct.get().setPrice(productDto.getPrice());
+        existingProduct.get().setStock(productDto.getStock());
 
         return productMapper.mapEntityToDto(productRepository.save(existingProduct.get()));
     }
