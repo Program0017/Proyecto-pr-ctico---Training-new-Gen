@@ -29,7 +29,7 @@ public class ClientController {
     private ClientService clientService;
 
     @Operation(summary = "Create a client", description = "Add a new client to the system")
-    @ApiResponse(responseCode = "201", description = "Client created")
+    @ApiResponse(responseCode = "201 ", description = "Client created")
     @PostMapping(IClientEndPoints.CLIENT_CREATE_URL)
     public ResponseEntity<ClientDto> createClient(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Client to be added", required = true, content = @Content(schema = @Schema(implementation = ClientEntity.class)))  @RequestBody ClientDto clientDto){
         ClientDto newClient = clientService.createClient(clientDto);
