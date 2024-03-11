@@ -15,6 +15,7 @@ import java.util.UUID;
 @Setter
 public class OrderDto {
 
+    private Integer id;
     private ProductEntity product;
     private ClientEntity client;
     private Integer quantity;

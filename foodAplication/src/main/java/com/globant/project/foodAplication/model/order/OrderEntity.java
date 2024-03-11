@@ -29,7 +29,7 @@ public class OrderEntity {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private ProductEntity product;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private ClientEntity client;
 

@@ -43,7 +43,6 @@ public class OrderService {
     public OrderDto createOrder(OrderDto orderDto) {
         try{
             Optional<ProductEntity> productOptional = this.productRepository.findById(orderDto.getProduct().getId());
-            System.out.println("Clase: " +productOptional);
             if (productOptional.isPresent()) {
                 ProductEntity productEntity = productOptional.get();
                 Double price = productEntity.getPrice();
