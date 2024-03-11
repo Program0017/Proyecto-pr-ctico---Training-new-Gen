@@ -28,12 +28,16 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
+    @Operation(summary = "Create a Product", description = "creates a product with the restaurant's requirements")
+    @ApiResponse(responseCode = "201", description = "Product created")
     @PostMapping(IProductEndPoints.PRODUCT_CREATE_URL)
     public ResponseEntity<ProductDto> createProduct (@RequestBody ProductDto productDto){
         ProductDto newProductEntity = productService.createProduct(productDto);
         return new ResponseEntity<>(newProductEntity, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get a product", description = "Brings the data of a product of the restaurant")
+    @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)))
     @GetMapping(IProductEndPoints.PRODUCT_GET_URL)
     public ResponseEntity<ProductDto> productById (@PathVariable("uuid") UUID uuid){
         ProductDto productDto = productService.findByUUID(uuid);
