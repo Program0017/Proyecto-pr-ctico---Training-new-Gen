@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,25 +25,18 @@ import java.util.UUID;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    OrderService orderService;
 
-
-    @Operation(summary = "Create a order", description = "Forms an order as requested by the customer")
-    @ApiResponse(responseCode = "201", description = "Order created")
-    @PostMapping(IOrderEndPoints.ORDER_CREATE_URL)
-    public ResponseEntity<OrderDto> orderCreate(@RequestBody OrderDto  orderDto){
-        OrderDto newOrder = orderService.createOrder(orderDto);
-        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<OrderEntity> createOrder(@RequestBody OrderDto orderDto){
+        OrderEntity order = OrderDto.fromDto(orderDto);
+        return new ResponseEntity<OrderEntity>(orderService.createOrder(order), HttpStatus.CREATED );
     }
 
-    @Operation(summary = "Update a Order", description = "Update information of a Order")
-    @ApiResponse(responseCode = "204", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class)))
-    @PutMapping(IOrderEndPoints.ORDER_UPDATE_URL)
-    public  ResponseEntity<OrderDto> orderFinish(@PathVariable("uuid") UUID uuid, @PathVariable("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime deliveryDate){
-        OrderDto newOrder = orderService.orderFinish(uuid,deliveryDate);
-        return new ResponseEntity<>(newOrder, HttpStatus.OK);
+    @PatchMapping("/{uuid}/delivered/{localDateTime}")
+    public ResponseEntity<OrderEntity> updateOrder(@PathVariable UUID uuid, @PathVariable LocalDateTime localDateTime) {
+        LocalDate localDate = localDateTime.toLocalDate();
+        return new ResponseEntity<OrderEntity>(orderService.updateOrder(uuid, localDate), HttpStatus.OK);
     }
-
-
 
 }

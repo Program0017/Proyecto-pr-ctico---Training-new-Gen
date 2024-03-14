@@ -2,6 +2,7 @@ package com.globant.project.foodAplication.testClient;
 
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.ClientDto;
+import com.globant.project.foodAplication.mapper.ClientMapper;
 import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.repository.client.IClientRepository;
 import com.globant.project.foodAplication.service.client.ClientService;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -24,34 +26,39 @@ public class ClientEntityTest {
 
     @InjectMocks
     private ClientService clientService;
+
+    @Autowired
+    private ClientMapper clientMapper;
     @Test
     public void testCreateClientSuccess(){
-//        ClientDto clientDto = ClientDto.builder()
-//                .id(1)
-//                .document("1004798908")
-//                .name("fulanito")
-//                .email("pepito32@gmail.com")
-//                .phone("3333335")
-//                .deliveryAddress("Avenida Siempre vivo")
-//                .build();
-//        ClientEntity clientEntity = new ClientEntity();
-//        clientEntity.setId(1);
-//        clientEntity.setDocument("1004798908");
-//        clientEntity.setName("fulanito");
-//        clientEntity.setEmail("pepito32@gmail.com");
-//        clientEntity.setPhone("3333335");
-//        clientEntity.setDeliveryAddress("Avenida Siempre vivo");
-//
-//
-//        when(clientRepository.findById(1)).thenReturn(Optional.empty());
-//
-//        String result = clientService.createClient(clientEntity);
-//        assertEquals(IResponse.CREATE_SUCCESS, result);
-//
-//        verify(clientRepository, times(1)).save(clientEntity);
-//        verify(clientRepository, times(1)).findById(1);
-//
-//        verifyNoMoreInteractions(clientRepository);
+        /*
+        ClientDto clientDto = ClientDto.builder()
+                .document("1004798908")
+                .name("fulanito")
+                .email("pepito32@gmail.com")
+                .phone("3333335")
+                .deliveryAddress("Avenida Siempre vivo")
+                .build();
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setId(1);
+        clientEntity.setDocument("1004798908");
+        clientEntity.setName("fulanito");
+        clientEntity.setEmail("pepito32@gmail.com");
+        clientEntity.setPhone("3333335");
+        clientEntity.setDeliveryAddress("Avenida Siempre vivo");
+
+
+        when(clientRepository.findById(1)).thenReturn(Optional.empty());
+
+        ClientDto result = clientService.createClient(clientMapper.mapEntityToDto(clientEntity) );
+        assertEquals(IResponse.CREATE_SUCCESS, result);
+
+        verify(clientRepository, times(1)).save(clientEntity);
+        verify(clientRepository, times(1)).findById(1);
+
+        verifyNoMoreInteractions(clientRepository);
+
+         */
     }
 
     @Test

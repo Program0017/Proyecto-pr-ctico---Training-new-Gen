@@ -3,14 +3,18 @@ package com.globant.project.foodAplication.service.order;
 import com.globant.project.foodAplication.commons.constants.response.IResponse;
 import com.globant.project.foodAplication.commons.dto.OrderDto;
 import com.globant.project.foodAplication.mapper.OrderMapper;
+import com.globant.project.foodAplication.model.client.ClientEntity;
 import com.globant.project.foodAplication.model.order.OrderEntity;
 import com.globant.project.foodAplication.model.product.ProductEntity;
+import com.globant.project.foodAplication.repository.client.IClientRepository;
 import com.globant.project.foodAplication.repository.order.IOrderRepository;
 import com.globant.project.foodAplication.repository.product.IProductRepository;
 import com.globant.project.foodAplication.utils.GrandTotalUtils;
 import com.globant.project.foodAplication.utils.RestQuantityUtils;
 import com.globant.project.foodAplication.utils.SubTotalUtils;
 import com.globant.project.foodAplication.utils.TaxUtils;
+import com.globant.project.foodAplication.utils.client.ClientValidation;
+import com.globant.project.foodAplication.utils.product.ProductValidation;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,71 +32,46 @@ import java.util.UUID;
 public class OrderService {
 
     @Autowired
-
     private IOrderRepository orderRepository;
     @Autowired
-    private IProductRepository productRepository;
+    IProductRepository productRepository;
     @Autowired
     private GrandTotalUtils grandTotalUtils;
     @Autowired
-    private TaxUtils taxUtils;
+    TaxUtils taxUtils;
     @Autowired
-    private OrderMapper orderMapper;
+    OrderMapper orderMapper;
+    @Autowired
+    IClientRepository clientRepository;
 
 
+    public OrderEntity createOrder(OrderEntity order) {
+        Optional<ClientEntity> client = clientRepository.findByDocument(order.getClientDocument());
+        ClientValidation.clientEmptyValidation(client, order.getClientDocument());
 
-    public OrderDto createOrder(OrderDto orderDto) {
-        try{
-            Optional<ProductEntity> productOptional = this.productRepository.findById(orderDto.getProduct().getId());
-            if (productOptional.isPresent()) {
-                ProductEntity productEntity = productOptional.get();
-                Double price = productEntity.getPrice();
-                Integer stock = productEntity.getStock();
-                Integer quantity = orderDto.getQuantity();
-                orderDto.setClient(orderDto.getClient());
-                orderDto.setProduct(productEntity);
-                orderDto.setQuantity(quantity);
-                orderDto.setExtraInformation(orderDto.getExtraInformation());
-                orderDto.setCreationDateTime(LocalDateTime.now());
+        Optional<ProductEntity> product = productRepository.findByUuid(order.getProductUuid());
+        ProductValidation.productEmptyValidation(product);
 
-                orderDto.setUuid(UUID.fromString(UUID.randomUUID().toString()));
-
-                Double subTotal = SubTotalUtils.makeSubTotal(price, quantity);
-                orderDto.setSubTotal(subTotal);
-
-                Double tax = TaxUtils.makeTax(subTotal);
-                orderDto.setTax(tax);
-
-                Double grandTotal = GrandTotalUtils.makeGranTotal(subTotal, tax);
-                orderDto.setGrandTotal(grandTotal);
-
-
-                Integer cantidad = RestQuantityUtils.restQuantity(quantity,stock);
-                productEntity.setStock(cantidad);
-                productRepository.save(productEntity);
-
-
-
-                OrderEntity order = orderMapper.mapDtoToEntity(orderDto);
-                return orderMapper.mapEntitytoDto(orderRepository.save(order));
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(IResponse.NOT_FOUND));
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        order.setSubtotal(Double.parseDouble(String.valueOf(product.get().getPrice())) * order.getQuantity());
+        order.setTax(order.getSubtotal() * 0.19);
+        order.setGrandTotal(order.getTax() + order.getSubtotal());
+        order.setDelivered(false);
+        order.setCreationDateTime(LocalDate.now());
+        return orderRepository.save(order);
     }
 
-    public OrderDto orderFinish(UUID uuid, LocalDateTime deliveryDate) {
-        Optional<OrderEntity> result = orderRepository.findByUuid(uuid);
-        if (result.isPresent()){
-            OrderEntity  orderEntity = result.get();
-            orderEntity.setDeliveryDate(deliveryDate);
-            orderEntity.setIsDelivered(true);
-            return orderMapper.mapEntitytoDto(orderRepository.save(orderEntity));
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format(IResponse.NOT_FOUND));
+
+    public OrderEntity updateOrder(UUID uuid, LocalDate localDate) {
+
+        ProductValidation.productFormatUuid(uuid);
+        Optional<OrderEntity> order = orderRepository.findByUuid(uuid);
+        if(order.isPresent()){
+            order.get().setDelivered(true);
+            order.get().setDeliveredDate(localDate);
+            return this.orderRepository.save(order.get());
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Order with uuid %d does not exist", uuid));
         }
     }
 }

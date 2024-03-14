@@ -1,10 +1,12 @@
 package com.globant.project.foodAplication.model.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.globant.project.foodAplication.model.product.ProductEntity;
 import com.globant.project.foodAplication.model.client.ClientEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,45 +21,24 @@ import java.util.UUID;
 public class OrderEntity {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(unique = true)
-    private  UUID uuid;
-
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity product;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private ClientEntity client;
-
-    @Column(name = "quantity")
-    private Integer quantity;
-
-    @Column(name = "extra_information")
+    private Long id;
+    private String clientDocument;
+    private UUID productUuid;
+    private int quantity;
     private String extraInformation;
-
-    @Column(name = "creation_datetime")
-    private LocalDateTime creationDateTime;
-
-    @Column(name = "delivery_date")
-    private LocalDateTime deliveryDate;
-
-    @Column(name = "tax")
-    private Double tax;
-
-    @Column(name = "grand_total")
-    private Double grandTotal;
-
-    @Column(name = "sub_total")
-    private Double subTotal;
-
-    @Column(name = "delivered")
-    private Boolean isDelivered = false;
+    private LocalDate creationDateTime;
+    private double subtotal;
+    private double tax;
+    private double grandTotal;
+    private boolean delivered;
+    private LocalDate deliveredDate;
+    @Column(unique = true,
+            columnDefinition = "BINARY(16)")
+    private UUID uuid = UUID.randomUUID();
 
     public OrderEntity(Boolean isDelivered) {
-        this.isDelivered = false;
+        this.delivered = false;
     }
 }
